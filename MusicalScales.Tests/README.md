@@ -60,6 +60,7 @@ This document describes the unit testing project that was created for the Musica
 5. **Async Testing**: All async operations are properly tested
 6. **Integration Testing**: DatabaseSeeder tests use actual EF Core context
 7. **Automated Test Runner**: PowerShell script (`RunUnitTests.ps1`) handles everything from test execution to coverage reporting
+8. **Continuous Integration**: GitHub Actions workflow automatically runs tests on multiple platforms
 
 ## Running Tests
 
@@ -136,6 +137,22 @@ dotnet-coverage collect "dotnet test" -f xml -o coverage.xml
 ## Test Results
 
 All 110 tests pass successfully, providing confidence in the reliability of the service layer implementations.
+
+## Continuous Integration
+
+The project includes a streamlined GitHub Actions workflow (`.github/workflows/build-and-test.yml`) that provides:
+
+### Build and Test Job
+- **Automated Building**: Restores dependencies and builds the solution
+- **Unit Test Execution**: Runs all 110+ unit tests
+- **Test Reporting**: Uses dorny/test-reporter for clean, readable test result summaries
+
+### Workflow Triggers
+- **Push Events**: Automatically runs on pushes to `main` branch
+- **Pull Requests**: Runs on all PRs targeting the `main` branch
+- **Manual Trigger**: Can be run manually from the GitHub Actions tab
+
+The workflow focuses on essential CI tasks: building the solution and running tests with clear reporting.
 
 ## Notes
 

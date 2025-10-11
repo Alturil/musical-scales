@@ -70,6 +70,14 @@ dotnet test --collect:"XPlat Code Coverage"
 .\RunUnitTests.ps1  # Runs tests + generates coverage report + opens in browser
 ```
 
+### Continuous Integration
+The project includes a streamlined GitHub Actions workflow that automatically:
+- ✅ Builds the solution
+- ✅ Runs all 110 unit tests
+- ✅ Reports test results with detailed summaries
+
+The workflow runs on every push to `main` branch and on pull requests to `main`.
+
 ### Project Structure
 ```
 musical-scales/
