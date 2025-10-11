@@ -20,9 +20,8 @@ public class ScaleRepository : IScaleRepository
     /// <inheritdoc />
     public async Task<IEnumerable<Scale>> GetAllScalesAsync()
     {
-        return await _context.Scales
-            .OrderBy(s => s.Metadata.Names.FirstOrDefault())
-            .ToListAsync();
+        var scales = await _context.Scales.ToListAsync();
+        return scales.OrderBy(s => s.Metadata.Names.FirstOrDefault());
     }
     
     /// <inheritdoc />
@@ -38,10 +37,10 @@ public class ScaleRepository : IScaleRepository
         if (string.IsNullOrWhiteSpace(name))
             return Enumerable.Empty<Scale>();
             
-        return await _context.Scales
+        var allScales = await _context.Scales.ToListAsync();
+        return allScales
             .Where(s => s.Metadata.Names.Any(n => n.ToLower().Contains(name.ToLower())))
-            .OrderBy(s => s.Metadata.Names.FirstOrDefault())
-            .ToListAsync();
+            .OrderBy(s => s.Metadata.Names.FirstOrDefault());
     }
     
     /// <inheritdoc />
