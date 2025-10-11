@@ -41,3 +41,45 @@ The API will start with some pre-seeded scales (Major and Natural Minor) for imm
 - `DELETE /api/scales/{id}` - Delete scale
 
 Visit the Swagger UI at the root URL for interactive documentation and testing.
+
+## Development & Testing
+
+### Unit Tests
+This project includes a comprehensive unit testing suite with 110+ tests covering all service layer functionality. The test suite includes:
+
+- **Service Layer Tests**: Complete coverage of PitchService, IntervalService, ScaleService, and DatabaseSeeder
+- **Mocking & Isolation**: Uses Moq for dependency isolation and proper unit testing
+- **Integration Testing**: Database seeding and Entity Framework operations
+- **Code Coverage**: Tools and instructions for generating coverage reports
+
+For detailed testing information, setup instructions, and coverage reporting, see:
+📖 **[MusicalScales.Tests/README.md](MusicalScales.Tests/README.md)**
+
+### Running Tests
+```bash
+# Run all tests (110 tests pass)
+dotnet test
+
+# Run tests with coverage collection
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+**PowerShell Script (Recommended):**
+```powershell
+# From the MusicalScales.Tests directory
+.\RunUnitTests.ps1  # Runs tests + generates coverage report + opens in browser
+```
+
+### Project Structure
+```
+musical-scales/
+├── MusicalScales.Api/          # Main API project
+│   ├── Controllers/            # API controllers
+│   ├── Services/              # Business logic services
+│   ├── Models/                # Domain models
+│   ├── Data/                  # Entity Framework context
+│   └── Repositories/          # Data access layer
+└── MusicalScales.Tests/       # Unit test project
+    ├── Services/              # Service layer tests
+    └── README.md             # Detailed testing documentation
+```
