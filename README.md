@@ -44,36 +44,54 @@ Visit the Swagger UI at the root URL for interactive documentation and testing.
 
 ## Development & Testing
 
-### Unit Tests
-This project includes a comprehensive unit testing suite with 110+ tests covering all service layer functionality. The test suite includes:
+### Testing
 
+This project includes both unit tests and integration tests to ensure comprehensive code coverage:
+
+#### Unit Tests (110+ tests)
 - **Service Layer Tests**: Complete coverage of PitchService, IntervalService, ScaleService, and DatabaseSeeder
 - **Mocking & Isolation**: Uses Moq for dependency isolation and proper unit testing
-- **Integration Testing**: Database seeding and Entity Framework operations
 - **Code Coverage**: Tools and instructions for generating coverage reports
 
-For detailed testing information, setup instructions, and coverage reporting, see:
-📖 **[MusicalScales.Tests/README.md](MusicalScales.Tests/README.md)**
+For detailed unit testing information, see: 📖 **[MusicalScales.Tests/README.md](MusicalScales.Tests/README.md)**
+
+#### Integration Tests (8 tests)
+- **End-to-End API Testing**: Tests all endpoints using WebApplicationFactory
+- **JSON Payload Testing**: Uses external JSON files for realistic test data
+- **Database Integration**: Tests with in-memory database and seeded data
+- **HTTP Semantics**: Validates status codes, headers, and response formats
+
+For detailed integration testing information, see: 📖 **[MusicalScales.IntegrationTests/README.md](MusicalScales.IntegrationTests/README.md)**
 
 ### Running Tests
 ```bash
-# Run all tests (110 tests pass)
+# Run all tests (110+ unit tests + 8 integration tests)
 dotnet test
+
+# Run only unit tests
+dotnet test MusicalScales.Tests
+
+# Run only integration tests  
+dotnet test MusicalScales.IntegrationTests
 
 # Run tests with coverage collection
 dotnet test --collect:"XPlat Code Coverage"
 ```
 
-**PowerShell Script (Recommended):**
+**PowerShell Scripts (Recommended):**
 ```powershell
 # From the MusicalScales.Tests directory
-.\RunUnitTests.ps1  # Runs tests + generates coverage report + opens in browser
+.\RunUnitTests.ps1  # Runs unit tests + generates coverage report + opens in browser
+
+# From the root directory  
+.\run-integration-tests.ps1  # Runs integration tests (if available)
 ```
 
 ### Continuous Integration
 The project includes a streamlined GitHub Actions workflow that automatically:
 - ✅ Builds the solution
-- ✅ Runs all 110 unit tests
+- ✅ Runs all 110+ unit tests  
+- ✅ Runs all 8 integration tests
 - ✅ Reports test results with detailed summaries
 
 The workflow runs on every push to `main` branch and on pull requests to `main`.
@@ -81,13 +99,18 @@ The workflow runs on every push to `main` branch and on pull requests to `main`.
 ### Project Structure
 ```
 musical-scales/
-├── MusicalScales.Api/          # Main API project
-│   ├── Controllers/            # API controllers
-│   ├── Services/              # Business logic services
-│   ├── Models/                # Domain models
-│   ├── Data/                  # Entity Framework context
-│   └── Repositories/          # Data access layer
-└── MusicalScales.Tests/       # Unit test project
-    ├── Services/              # Service layer tests
-    └── README.md             # Detailed testing documentation
+├── MusicalScales.Api/               # Main API project
+│   ├── Controllers/                 # API controllers
+│   ├── Services/                   # Business logic services
+│   ├── Models/                     # Domain models
+│   ├── Data/                       # Entity Framework context
+│   └── Repositories/               # Data access layer
+├── MusicalScales.Tests/             # Unit test project (110+ tests)
+│   ├── Services/                   # Service layer tests
+│   └── README.md                   # Unit testing documentation
+└── MusicalScales.IntegrationTests/ # Integration test project (8 tests)
+    ├── Controllers/                 # API endpoint tests
+    ├── Fixtures/                   # Test setup and data
+    ├── ApiTestRequests/            # JSON test payloads
+    └── README.md                   # Integration testing documentation
 ```
