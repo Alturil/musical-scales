@@ -24,14 +24,14 @@ jobs:
       with:
         dotnet-version: '8.0.x'
     
-    - name: Build
-      run: dotnet build
+    - name: Build Solution
+      run: dotnet build --configuration Release
     
     - name: Run Unit Tests
-      run: dotnet test MusicalScales.Tests --no-build --verbosity normal --logger trx --results-directory TestResults/UnitTests
+      run: dotnet test MusicalScales.Tests --configuration Release --no-build --verbosity normal --logger trx --results-directory TestResults/UnitTests
     
     - name: Run Integration Tests
-      run: dotnet test MusicalScales.IntegrationTests --no-build --verbosity normal --logger trx --results-directory TestResults/IntegrationTests
+      run: dotnet test MusicalScales.IntegrationTests --configuration Release --no-build --verbosity normal --logger trx --results-directory TestResults/IntegrationTests
     
     - name: Unit Test Report
       uses: dorny/test-reporter@v1
