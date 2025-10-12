@@ -1,0 +1,38 @@
+{
+	"Metadata": {
+		"Names": ["Minor Pentatonic"],
+		"Description": "A five-note scale commonly used in blues and rock music"
+	},
+	"Intervals": [
+		{
+			"Name": "Third",
+			"Quality": "Minor",
+			"PitchOffset": 1,
+			"SemitoneOffset": 3
+		},
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 2,
+			"SemitoneOffset": 5
+		},
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 3,
+			"SemitoneOffset": 7
+		},
+		{
+			"Name": "Third",
+			"Quality": "Minor",
+			"PitchOffset": 4,
+			"SemitoneOffset": 10
+		},
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 5,
+			"SemitoneOffset": 12
+		}
+	]
+}

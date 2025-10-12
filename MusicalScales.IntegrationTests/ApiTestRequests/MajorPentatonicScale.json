@@ -1,0 +1,38 @@
+{
+	"Metadata": {
+		"Names": ["Major Pentatonic"],
+		"Description": "A five-note scale with a bright, uplifting sound"
+	},
+	"Intervals": [
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 1,
+			"SemitoneOffset": 2
+		},
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 2,
+			"SemitoneOffset": 4
+		},
+		{
+			"Name": "Third",
+			"Quality": "Minor",
+			"PitchOffset": 3,
+			"SemitoneOffset": 6
+		},
+		{
+			"Name": "Second",
+			"Quality": "Major",
+			"PitchOffset": 4,
+			"SemitoneOffset": 8
+		},
+		{
+			"Name": "Third",
+			"Quality": "Minor",
+			"PitchOffset": 5,
+			"SemitoneOffset": 10
+		}
+	]
+}
