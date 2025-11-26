@@ -17,9 +17,4 @@ public class ScaleMetadata
     /// Optional description of the scale
     /// </summary>
     public string? Description { get; set; }
-    
-    /// <summary>
-    /// Optional origin/culture information
-    /// </summary>
-    public string? Origin { get; set; }
 }

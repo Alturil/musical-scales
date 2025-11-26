@@ -51,11 +51,10 @@ public class DatabaseSeeder
             new()
             {
                 Id = Guid.Parse("550e8400-e29b-41d4-a716-446655440001"),
-                Metadata = new ScaleMetadata 
-                { 
+                Metadata = new ScaleMetadata
+                {
                     Names = ["Major Scale", "Ionian Mode"],
-                    Description = "The most common scale in Western music",
-                    Origin = "Western"
+                    Description = "The most common scale in Western music"
                 },
                 Intervals =
                 [
@@ -71,11 +70,10 @@ public class DatabaseSeeder
             new()
             {
                 Id = Guid.Parse("550e8400-e29b-41d4-a716-446655440002"),
-                Metadata = new ScaleMetadata 
-                { 
+                Metadata = new ScaleMetadata
+                {
                     Names = ["Natural Minor Scale", "Aeolian Mode"],
-                    Description = "The natural minor scale",
-                    Origin = "Western"
+                    Description = "The natural minor scale"
                 },
                 Intervals =
                 [
