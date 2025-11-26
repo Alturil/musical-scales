@@ -34,6 +34,12 @@ variable "api_key_usage_limit" {
   default     = 1000
 }
 
+variable "lambda_package_path" {
+  description = "Path to Lambda deployment package"
+  type        = string
+  default     = "../lambda-package.zip"
+}
+
 variable "tags" {
   description = "Common tags to apply to all resources"
   type        = map(string)

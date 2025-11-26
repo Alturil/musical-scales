@@ -65,8 +65,8 @@ resource "aws_lambda_function" "api" {
   timeout       = 30
 
   # Use local zip file instead of S3
-  filename         = "../lambda-package.zip"
-  source_code_hash = filebase64sha256("../lambda-package.zip")
+  filename         = var.lambda_package_path
+  source_code_hash = filebase64sha256(var.lambda_package_path)
 
   environment {
     variables = {
