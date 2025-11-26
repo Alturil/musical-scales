@@ -160,7 +160,7 @@ public class DynamoDbScaleRepository : IScaleRepository
         };
 
         var response = await _dynamoDb.DeleteItemAsync(request);
-        return response.Attributes.Count > 0;
+        return response.Attributes != null && response.Attributes.Count > 0;
     }
 
     public async Task<bool> ScaleExistsAsync(Guid id)
