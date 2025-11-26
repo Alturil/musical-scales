@@ -46,19 +46,19 @@ public class DatabaseSeeder
 
     private static List<Scale> GetSeedScales()
     {
-        return new List<Scale>
-        {
+        return
+        [
             new()
             {
                 Id = Guid.Parse("550e8400-e29b-41d4-a716-446655440001"),
                 Metadata = new ScaleMetadata 
                 { 
-                    Names = new List<string> { "Major Scale", "Ionian Mode" },
+                    Names = ["Major Scale", "Ionian Mode"],
                     Description = "The most common scale in Western music",
                     Origin = "Western"
                 },
-                Intervals = new List<Interval>
-                {
+                Intervals =
+                [
                     new() { Name = IntervalSizeName.Second, Quality = IntervalQualityName.Major, PitchOffset = 1, SemitoneOffset = 2 },
                     new() { Name = IntervalSizeName.Third, Quality = IntervalQualityName.Major, PitchOffset = 2, SemitoneOffset = 4 },
                     new() { Name = IntervalSizeName.Fourth, Quality = IntervalQualityName.Perfect, PitchOffset = 3, SemitoneOffset = 5 },
@@ -66,19 +66,19 @@ public class DatabaseSeeder
                     new() { Name = IntervalSizeName.Sixth, Quality = IntervalQualityName.Major, PitchOffset = 5, SemitoneOffset = 9 },
                     new() { Name = IntervalSizeName.Seventh, Quality = IntervalQualityName.Major, PitchOffset = 6, SemitoneOffset = 11 },
                     new() { Name = IntervalSizeName.Octave, Quality = IntervalQualityName.Perfect, PitchOffset = 7, SemitoneOffset = 12 }
-                }
+                ]
             },
             new()
             {
                 Id = Guid.Parse("550e8400-e29b-41d4-a716-446655440002"),
                 Metadata = new ScaleMetadata 
                 { 
-                    Names = new List<string> { "Natural Minor Scale", "Aeolian Mode" },
+                    Names = ["Natural Minor Scale", "Aeolian Mode"],
                     Description = "The natural minor scale",
                     Origin = "Western"
                 },
-                Intervals = new List<Interval>
-                {
+                Intervals =
+                [
                     new() { Name = IntervalSizeName.Second, Quality = IntervalQualityName.Major, PitchOffset = 1, SemitoneOffset = 2 },
                     new() { Name = IntervalSizeName.Third, Quality = IntervalQualityName.Minor, PitchOffset = 2, SemitoneOffset = 3 },
                     new() { Name = IntervalSizeName.Fourth, Quality = IntervalQualityName.Perfect, PitchOffset = 3, SemitoneOffset = 5 },
@@ -86,8 +86,8 @@ public class DatabaseSeeder
                     new() { Name = IntervalSizeName.Sixth, Quality = IntervalQualityName.Minor, PitchOffset = 5, SemitoneOffset = 8 },
                     new() { Name = IntervalSizeName.Seventh, Quality = IntervalQualityName.Minor, PitchOffset = 6, SemitoneOffset = 10 },
                     new() { Name = IntervalSizeName.Octave, Quality = IntervalQualityName.Perfect, PitchOffset = 7, SemitoneOffset = 12 }
-                }
+                ]
             }
-        };
+        ];
     }
 }

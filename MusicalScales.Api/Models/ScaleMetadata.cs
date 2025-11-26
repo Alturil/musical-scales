@@ -11,7 +11,7 @@ public class ScaleMetadata
     /// Collection of names for the scale
     /// </summary>
     [Required]
-    public IList<string> Names { get; set; } = new List<string>();
+    public IList<string> Names { get; set; } = [];
     
     /// <summary>
     /// Optional description of the scale

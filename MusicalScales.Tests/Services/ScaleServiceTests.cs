@@ -117,7 +117,7 @@ public class ScaleServiceTests
             {
                 Id = Guid.NewGuid(),
                 Metadata = new ScaleMetadata { Names = ["Major"] },
-                Intervals = new List<Interval>()
+                Intervals = []
             }
         };
 
@@ -142,7 +142,7 @@ public class ScaleServiceTests
         {
             Id = scaleId,
             Metadata = new ScaleMetadata { Names = ["Major"] },
-            Intervals = new List<Interval>()
+            Intervals = []
         };
 
         _mockScaleRepository
@@ -168,7 +168,7 @@ public class ScaleServiceTests
             {
                 Id = Guid.NewGuid(),
                 Metadata = new ScaleMetadata { Names = [scaleName] },
-                Intervals = new List<Interval>()
+                Intervals = []
             }
         };
 
@@ -226,8 +226,8 @@ public class ScaleServiceTests
         {
             Id = Guid.NewGuid(),
             Metadata = new ScaleMetadata { Names = ["Test Scale"] },
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -235,7 +235,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         _mockScaleRepository
@@ -258,8 +258,8 @@ public class ScaleServiceTests
         {
             Id = Guid.NewGuid(),
             Metadata = new ScaleMetadata { Names = [] }, // Empty names
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -267,7 +267,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         // Act & Assert
@@ -286,8 +286,8 @@ public class ScaleServiceTests
         {
             Id = Guid.NewGuid(),
             Metadata = new ScaleMetadata { Names = null! }, // Null names
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -295,7 +295,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         // Act & Assert
@@ -314,8 +314,8 @@ public class ScaleServiceTests
         {
             Id = Guid.NewGuid(),
             Metadata = null!, // Null metadata
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -323,7 +323,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         // Act & Assert
@@ -384,8 +384,8 @@ public class ScaleServiceTests
         {
             Id = Guid.NewGuid(),
             Metadata = new ScaleMetadata { Names = ["Valid Name", invalidName] },
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -393,7 +393,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         // Act & Assert
@@ -413,8 +413,8 @@ public class ScaleServiceTests
         {
             Id = scaleId,
             Metadata = new ScaleMetadata { Names = ["Updated Scale"] },
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -422,7 +422,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         _mockScaleRepository
@@ -446,8 +446,8 @@ public class ScaleServiceTests
         {
             Id = scaleId,
             Metadata = new ScaleMetadata { Names = [] }, // Invalid: no names
-            Intervals = new List<Interval>
-            {
+            Intervals =
+            [
                 new Interval
                 {
                     Name = IntervalSizeName.Second,
@@ -455,7 +455,7 @@ public class ScaleServiceTests
                     PitchOffset = 1,
                     SemitoneOffset = 2
                 }
-            }
+            ]
         };
 
         // Act & Assert
