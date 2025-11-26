@@ -1,6 +1,6 @@
 output "api_gateway_url" {
   description = "API Gateway invoke URL"
-  value       = "${aws_api_gateway_stage.main.invoke_url}"
+  value       = aws_api_gateway_stage.main.invoke_url
 }
 
 output "api_gateway_stage" {
@@ -14,7 +14,7 @@ output "api_key_id" {
 }
 
 output "api_key_value" {
-  description = "API Gateway API Key value (sensitive)"
+  description = "API Gateway API Key value (sensitive - for CI/CD automation only)"
   value       = aws_api_gateway_api_key.main.value
   sensitive   = true
 }
@@ -56,7 +56,7 @@ output "account_id" {
 
 output "api_documentation" {
   description = "API documentation and usage instructions"
-  value = <<-EOT
+  value       = <<-EOT
 
     🎵 Musical Scales API Deployed Successfully!
 

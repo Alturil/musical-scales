@@ -16,8 +16,8 @@ terraform {
     # bucket         = "terraform-state-bucket"  # Provided via -backend-config
     # key            = "musical-scales/terraform.tfstate"  # Provided via -backend-config
     # region         = "us-east-1"  # Provided via -backend-config
-    encrypt        = true
-    use_lockfile   = true  # S3 native locking (Terraform 1.8.0+)
+    encrypt      = true
+    use_lockfile = true # S3 native locking (Terraform 1.8.0+)
   }
 }
 

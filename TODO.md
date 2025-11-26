@@ -54,33 +54,26 @@ using (var scope = app.Services.CreateScope())
 
 ## Infrastructure & Deployment
 
-### 1. Implement AWS Deployment Pipeline with Terraform
-**Documentation**: See `Docs/DEPLOYMENT.md` for complete analysis
+### 1. ✅ Implement AWS Deployment Pipeline with Terraform ✅
+**Status**: COMPLETED
 
-**Current State**: No deployment infrastructure exists
+**Implementation**:
+- ✅ Terraform state backend (S3 bucket with versioning and encryption)
+- ✅ GitHub OIDC provider for keyless AWS authentication
+- ✅ Lambda function (.NET 8 runtime) with API Gateway integration
+- ✅ DynamoDB table for persistent data storage
+- ✅ API Gateway REST API with API key authentication
+- ✅ Usage plans with rate limiting (50 req/sec, 100 burst, 1000/day quota)
+- ✅ CloudWatch logs and monitoring with alarms
+- ✅ GitHub Actions workflow for automated CI/CD
+- ✅ Automated setup scripts (Setup-AWS.ps1, Verify-Setup.ps1)
 
-**Recommended Approach**: Option 3 (API Gateway REST API + Lambda + API Keys)
-
-**Action Items**:
-1. Set up AWS account and Terraform state backend (S3 + DynamoDB)
-2. Configure GitHub OIDC for secure AWS authentication
-3. Create Terraform configuration for:
-   - Lambda function (.NET 8 runtime)
-   - API Gateway REST API
-   - API Keys with usage plans (rate limiting)
-   - CloudWatch logs and monitoring
-4. Create GitHub Actions workflow for CI/CD:
-   - Build Lambda deployment package
-   - Upload to S3
-   - Run Terraform plan/apply
-5. Document API key management and usage
-
-**Future Enhancements** (after Option 3 works):
+**Future Enhancements**:
 - Add custom domain with Route53 + ACM certificate
 - Add multiple environments (dev/staging/prod)
 - Consider Cognito for user management (if needed)
 
-**Reference**: Based on lessons learned from [numerology project](https://github.com/Alturil/numerology)
+**Documentation**: See `Docs/DEPLOYMENT.md` and `Scaffolding/README.md`
 
 ## Good Practices to Maintain
 
@@ -105,6 +98,15 @@ These are correctly implemented and should be preserved:
 
 - ✅ **Remove Dead Code in DbContext** - Removed unused `SeedData` method and its call from `MusicalScalesDbContext.cs`
 - ✅ **Use camelCase JSON Convention** - Changed `PropertyNamingPolicy` from `null` to `JsonNamingPolicy.CamelCase` in `Program.cs`
+- ✅ **Implement AWS Deployment Pipeline with Terraform** - Completed Option 3 (API Gateway REST API + Lambda + API Keys + DynamoDB) with full Terraform configuration
+- ✅ **Add DynamoDB for Persistent Storage** - Implemented dual database strategy:
+  - SQLite for local development (file-based, easy to reset)
+  - DynamoDB for AWS Lambda (serverless, persistent, scalable)
+  - Automatic environment detection via `AWS_EXECUTION_ENV`
+  - Created `DynamoDbScaleRepository` implementation
+  - Added Terraform configuration for DynamoDB table with PAY_PER_REQUEST billing
+  - Updated IAM permissions for Lambda to access DynamoDB
+  - All 118 tests passing (110 unit + 8 integration)
 
 ## Notes
 
