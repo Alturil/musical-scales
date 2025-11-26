@@ -1,0 +1,141 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  DOTNET_VERSION: '8.0.x'
+  TERRAFORM_VERSION: '1.14.0'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: GitHubActions-MusicalScales
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="key=musical-scales/${{ secrets.ENVIRONMENT }}/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}"
+
+          echo "✅ Using S3 native state locking (use_lockfile=true)"
+
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Install AWS Lambda Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+
+      - name: Package Lambda function
+        working-directory: ./MusicalScales.Api
+        run: |
+          dotnet lambda package \
+            --configuration Release \
+            --framework net8.0 \
+            --output-package ../lambda-package.zip
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: |
+          terraform plan \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -var="environment=${{ secrets.ENVIRONMENT }}" \
+            -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Get API Key
+        id: api_key
+        working-directory: ./terraform
+        run: |
+          API_KEY=$(terraform output -raw api_key_value)
+          echo "::add-mask::${API_KEY}"
+          echo "API_KEY=${API_KEY}" >> $GITHUB_OUTPUT
+
+      - name: Display Deployment Info
+        working-directory: ./terraform
+        run: |
+          echo "🎵 Musical Scales API Deployment Complete!"
+          echo ""
+          echo "📍 API Gateway URL:"
+          terraform output -raw api_gateway_url
+          echo ""
+          echo ""
+          echo "🔑 API Key ID:"
+          terraform output -raw api_key_id
+          echo ""
+          echo ""
+          echo "📊 CloudWatch Logs:"
+          echo "   Lambda: $(terraform output -raw cloudwatch_log_group_lambda)"
+          echo "   API Gateway: $(terraform output -raw cloudwatch_log_group_api_gateway)"
+          echo ""
+          echo "🚀 Test the API:"
+          echo "   curl -H \"x-api-key: YOUR_API_KEY\" $(terraform output -raw api_gateway_url)/api/scales"
+
+      - name: Test API Health Check
+        working-directory: ./terraform
+        run: |
+          API_URL=$(terraform output -raw api_gateway_url)
+          API_KEY=${{ steps.api_key.outputs.API_KEY }}
+
+          echo "Testing health check endpoint..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "x-api-key: ${API_KEY}" \
+            "${API_URL}/health")
+
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Health check passed (HTTP $HTTP_CODE)"
+          else
+            echo "❌ Health check failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+
+      - name: Deployment Summary
+        if: always()
+        run: |
+          echo "## 🎵 Musical Scales API Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ secrets.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ job.status }}" == "success" ]; then
+            cd terraform
+            echo "**API Gateway URL:** $(terraform output -raw api_gateway_url)" >> $GITHUB_STEP_SUMMARY
+            echo "**API Key ID:** $(terraform output -raw api_key_id)" >> $GITHUB_STEP_SUMMARY
+          fi

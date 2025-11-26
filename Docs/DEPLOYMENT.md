@@ -291,17 +291,19 @@ terraform/
 ### Required GitHub Secrets
 
 For Option 3:
-- `AWS_REGION` - AWS region (e.g., us-east-1)
-- `AWS_ROLE` - OIDC IAM role ARN for GitHub Actions
+- `AWS_REGION` - AWS region (ap-southeast-2)
+- `AWS_ROLE_ARN` - OIDC IAM role ARN for GitHub Actions
+- `LAMBDA_ARTIFACTS_BUCKET` - S3 bucket for Lambda packages
 - `TF_STATE_BUCKET` - S3 bucket for Terraform state
-- `TF_STATE_KEY` - State file path in S3
-- `TF_LOCK_TABLE` - DynamoDB table for state locking
+- `ENVIRONMENT` - Environment name (dev/staging/prod)
+
+**Note:** State locking uses S3's native `use_lockfile` feature (Terraform 1.8.0+) - no DynamoDB needed!
 
 ### Implementation Checklist
 
 - [ ] Set up AWS account and configure billing alerts
-- [ ] Create S3 bucket for Terraform state
-- [ ] Create DynamoDB table for state locking
+- [ ] Create S3 bucket for Lambda artifacts
+- [ ] Create S3 bucket for Terraform state (with versioning enabled)
 - [ ] Set up GitHub OIDC provider in AWS
 - [ ] Create IAM role for GitHub Actions
 - [ ] Write Terraform configuration

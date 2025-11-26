@@ -6,7 +6,15 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet test:*)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(Get-Content \"C:\\Repos\\musical-scales\\Scaffolding\\Setup-AWS.ps1\" -Encoding UTF8)",
+      "Bash(Select-Object -First 70)",
+      "Bash(Select-Object -Last 15)",
+      "Bash(powershell -Command \"Get-Command -Syntax Test-Path; $ast = [System.Management.Automation.Language.Parser]::ParseFile(''C:\\Repos\\musical-scales\\Scaffolding\\Setup-AWS.ps1'', [ref]$null, [ref]$null); if ($ast) { Write-Host ''Syntax is valid'' } else { Write-Host ''Syntax errors found'' }\")",
+      "Bash(powershell:*)",
+      "Bash(Remove-Item \"C:\\Repos\\musical-scales\\Scaffolding\\Test-Syntax.ps1\")",
+      "WebSearch",
+      "WebFetch(domain:cloudysaurus.com)"
     ],
     "deny": [],
     "ask": []

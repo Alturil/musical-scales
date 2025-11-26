@@ -55,7 +55,7 @@ using (var scope = app.Services.CreateScope())
 ## Infrastructure & Deployment
 
 ### 1. Implement AWS Deployment Pipeline with Terraform
-**Documentation**: See `DEPLOYMENT.md` for complete analysis
+**Documentation**: See `Docs/DEPLOYMENT.md` for complete analysis
 
 **Current State**: No deployment infrastructure exists
 
@@ -111,8 +111,8 @@ These are correctly implemented and should be preserved:
 For a learning/demo project showcasing music theory OOP, current tradeoffs are reasonable.
 
 **For production deployment, prioritize:**
-1. Set up AWS deployment infrastructure (see DEPLOYMENT.md)
+1. Set up AWS deployment infrastructure (see Docs/DEPLOYMENT.md)
 2. Add DTOs for API endpoints
 3. Reconsider JSON storage strategy if interval-based queries become important
 
-**Deployment**: See `DEPLOYMENT.md` for comprehensive analysis of AWS deployment options with Terraform.
+**Deployment**: See `Docs/DEPLOYMENT.md` for comprehensive analysis of AWS deployment options with Terraform.
