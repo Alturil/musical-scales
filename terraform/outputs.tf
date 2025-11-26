@@ -14,7 +14,7 @@ output "api_key_id" {
 }
 
 output "api_key_value" {
-  description = "API Gateway API Key value (sensitive)"
+  description = "API Gateway API Key value (sensitive - for CI/CD automation only)"
   value       = aws_api_gateway_api_key.main.value
   sensitive   = true
 }
