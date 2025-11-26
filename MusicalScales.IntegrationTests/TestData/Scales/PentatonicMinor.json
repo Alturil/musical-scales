@@ -1,0 +1,31 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Pentatonic Minor",
+                                   "Blues Scale"
+                               ],
+                     "description":  "A five-note scale derived from the natural minor scale, fundamental to blues and rock."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Third",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Third",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      }
+                  ]
+}

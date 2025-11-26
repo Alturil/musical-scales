@@ -1,0 +1,30 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Pentatonic Major"
+                               ],
+                     "description":  "A five-note scale derived from the major scale, widely used in folk and popular music."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Third",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Third",
+                          "quality":  "Minor"
+                      }
+                  ]
+}

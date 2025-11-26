@@ -1,0 +1,39 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Major",
+                                   "Ionian"
+                               ],
+                     "description":  "The most common scale in Western music, known for its bright and happy sound."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      }
+                  ]
+}

@@ -1,0 +1,39 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Natural Minor",
+                                   "Aeolian"
+                               ],
+                     "description":  "The relative minor scale, known for its melancholic and somber character."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      }
+                  ]
+}

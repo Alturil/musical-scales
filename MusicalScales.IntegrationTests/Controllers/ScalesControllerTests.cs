@@ -47,6 +47,23 @@ public class ScalesControllerTests : IDisposable
         return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
     }
 
+    private async Task SeedScalesAsync()
+    {
+        var scalesDir = Path.Combine(
+            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
+            "TestData",
+            "Scales"
+        );
+
+        var files = Directory.GetFiles(scalesDir, "*.json");
+        foreach (var file in files)
+        {
+            var json = await File.ReadAllTextAsync(file);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            await _client.PostAsync("/api/scales", content);
+        }
+    }
+
     #endregion
 
     #region GET /api/scales
@@ -54,6 +71,9 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetAllScales_ReturnsSeededScales()
     {
+        // Arrange
+        await SeedScalesAsync();
+
         // Act
         var response = await _client.GetAsync("/api/scales");
         var scales = await response.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
@@ -72,7 +92,8 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetScaleById_WithValidId_ReturnsScale()
     {
-        // Arrange - Get ID from seeded data
+        // Arrange - Seed data and get ID
+        await SeedScalesAsync();
         var allScalesResponse = await _client.GetAsync("/api/scales");
         var allScales = await allScalesResponse.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
         var validId = allScales!.First().Id;
@@ -107,6 +128,9 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task SearchScalesByName_WithValidName_ReturnsMatchingScales()
     {
+        // Arrange
+        await SeedScalesAsync();
+
         // Act
         var response = await _client.GetAsync("/api/scales/search?name=Major");
         var scales = await response.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
@@ -125,7 +149,8 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetScalePitches_WithValidScale_ReturnsCorrectPitches()
     {
-        // Arrange - Get ID from seeded data
+        // Arrange - Seed data and get ID
+        await SeedScalesAsync();
         var allScalesResponse = await _client.GetAsync("/api/scales");
         var allScales = await allScalesResponse.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
         var scaleId = allScales!.First().Id;
