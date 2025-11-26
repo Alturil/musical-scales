@@ -464,16 +464,16 @@ function Attach-IAMPolicy {
 
     $ErrorActionPreference = $previousErrorAction
 
-    if ($checkExitCode -eq 0) {
-        Write-Success "IAM policy already attached: $policyName"
-        return
-    }
-
-    Write-Info "Attaching IAM policy..."
-
     # Load and customize role policy template
     $policyTemplate = Get-Content "$PSScriptRoot\role-policy-template.json" -Raw
     $policy = $policyTemplate -replace 'TF_STATE_BUCKET', $BucketName
+
+    if ($checkExitCode -eq 0) {
+        Write-Info "IAM policy already exists, updating..."
+    }
+    else {
+        Write-Info "Attaching IAM policy..."
+    }
 
     # Validate JSON before applying
     try {
@@ -511,14 +511,19 @@ function Attach-IAMPolicy {
     Remove-Item $policyDocFile -ErrorAction SilentlyContinue
 
     if ($exitCode -ne 0) {
-        Write-Fail "Failed to attach IAM policy"
+        Write-Fail "Failed to update IAM policy"
         Write-Info "Error: $result"
         Write-Info "Policy document that was used:"
         Write-Host $policy
         exit 1
     }
 
-    Write-Success "Attached IAM policy: $policyName"
+    if ($checkExitCode -eq 0) {
+        Write-Success "Updated IAM policy: $policyName"
+    }
+    else {
+        Write-Success "Attached IAM policy: $policyName"
+    }
 }
 
 function Show-GitHubSecrets {
