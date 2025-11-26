@@ -83,7 +83,16 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Add health checks
-builder.Services.AddHealthChecks().AddDbContextCheck<MusicalScalesDbContext>();
+if (isLambda)
+{
+    // Basic health check without database dependency for Lambda
+    builder.Services.AddHealthChecks();
+}
+else
+{
+    // Include database health check for local development
+    builder.Services.AddHealthChecks().AddDbContextCheck<MusicalScalesDbContext>();
+}
 
 var app = builder.Build();
 
