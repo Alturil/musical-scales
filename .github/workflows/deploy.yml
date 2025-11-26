@@ -137,8 +137,32 @@ jobs:
             echo "❌ Health check failed (HTTP $HTTP_CODE)"
             echo "Response: $BODY"
             echo ""
-            echo "Debugging - trying without API key to see error:"
-            curl -i "${API_URL}/health"
+            echo "Fetching Lambda logs to diagnose issue..."
+            LAMBDA_NAME=$(terraform output -raw lambda_function_name)
+            LOG_GROUP=$(terraform output -raw cloudwatch_log_group_lambda)
+
+            # Get the most recent log stream
+            LOG_STREAM=$(aws logs describe-log-streams \
+              --log-group-name "$LOG_GROUP" \
+              --order-by LastEventTime \
+              --descending \
+              --max-items 1 \
+              --query 'logStreams[0].logStreamName' \
+              --output text)
+
+            if [ "$LOG_STREAM" != "None" ] && [ -n "$LOG_STREAM" ]; then
+              echo ""
+              echo "📋 Recent Lambda logs:"
+              aws logs get-log-events \
+                --log-group-name "$LOG_GROUP" \
+                --log-stream-name "$LOG_STREAM" \
+                --limit 50 \
+                --query 'events[*].message' \
+                --output text
+            else
+              echo "No log streams found yet"
+            fi
+
             exit 1
           fi
 
