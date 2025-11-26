@@ -51,10 +51,79 @@ public class IntervalService : IIntervalService
     {
         var combinedPitchOffset = interval1.PitchOffset + interval2.PitchOffset;
         var combinedSemitoneOffset = interval1.SemitoneOffset + interval2.SemitoneOffset;
-        
+
         return CreateInterval(combinedSemitoneOffset, combinedPitchOffset);
     }
-    
+
+    /// <inheritdoc />
+    public int GetSemitoneOffset(IntervalSizeName name, IntervalQualityName quality)
+    {
+        return name switch
+        {
+            IntervalSizeName.Unison => quality switch
+            {
+                IntervalQualityName.Perfect => 0,
+                IntervalQualityName.Augmented => 1,
+                IntervalQualityName.Diminished => -1,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Unison interval")
+            },
+            IntervalSizeName.Second => quality switch
+            {
+                IntervalQualityName.Minor => 1,
+                IntervalQualityName.Major => 2,
+                IntervalQualityName.Augmented => 3,
+                IntervalQualityName.Diminished => 0,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Second interval")
+            },
+            IntervalSizeName.Third => quality switch
+            {
+                IntervalQualityName.Minor => 3,
+                IntervalQualityName.Major => 4,
+                IntervalQualityName.Augmented => 5,
+                IntervalQualityName.Diminished => 2,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Third interval")
+            },
+            IntervalSizeName.Fourth => quality switch
+            {
+                IntervalQualityName.Perfect => 5,
+                IntervalQualityName.Augmented => 6,
+                IntervalQualityName.Diminished => 4,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Fourth interval")
+            },
+            IntervalSizeName.Fifth => quality switch
+            {
+                IntervalQualityName.Perfect => 7,
+                IntervalQualityName.Augmented => 8,
+                IntervalQualityName.Diminished => 6,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Fifth interval")
+            },
+            IntervalSizeName.Sixth => quality switch
+            {
+                IntervalQualityName.Minor => 8,
+                IntervalQualityName.Major => 9,
+                IntervalQualityName.Augmented => 10,
+                IntervalQualityName.Diminished => 7,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Sixth interval")
+            },
+            IntervalSizeName.Seventh => quality switch
+            {
+                IntervalQualityName.Minor => 10,
+                IntervalQualityName.Major => 11,
+                IntervalQualityName.Augmented => 12,
+                IntervalQualityName.Diminished => 9,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Seventh interval")
+            },
+            IntervalSizeName.Octave => quality switch
+            {
+                IntervalQualityName.Perfect => 12,
+                IntervalQualityName.Augmented => 13,
+                IntervalQualityName.Diminished => 11,
+                _ => throw new ArgumentException($"Invalid quality '{quality}' for Octave interval")
+            },
+            _ => throw new ArgumentException($"Invalid interval size '{name}'")
+        };
+    }
+
     private static IntervalQualityName DetermineIntervalQuality(IntervalSizeName size, int semitones)
     {
         return size switch

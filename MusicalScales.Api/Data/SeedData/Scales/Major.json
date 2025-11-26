@@ -1,0 +1,53 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Major",
+                                   "Ionian"
+                               ],
+                     "description":  "The most common scale in Western music, known for its bright and happy sound."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      }
+                  ]
+}

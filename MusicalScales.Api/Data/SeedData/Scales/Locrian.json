@@ -1,0 +1,52 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Locrian"
+                               ],
+                     "description":  "The seventh mode of the major scale, with a dark and unstable character."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      }
+                  ]
+}

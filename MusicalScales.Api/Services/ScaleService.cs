@@ -10,7 +10,7 @@ public class ScaleService : IScaleService
 {
     private readonly IScaleRepository _scaleRepository;
     private readonly IPitchService _pitchService;
-    
+
     public ScaleService(IScaleRepository scaleRepository, IPitchService pitchService)
     {
         _scaleRepository = scaleRepository;
@@ -25,7 +25,7 @@ public class ScaleService : IScaleService
         var currentPitch = rootPitch;
         foreach (var interval in scaleIntervals)
         {
-            currentPitch = _pitchService.GetPitch(rootPitch, interval);
+            currentPitch = _pitchService.GetPitch(currentPitch, interval);
             scalePitches.Add(currentPitch);
         }
         
@@ -62,7 +62,7 @@ public class ScaleService : IScaleService
         ValidateScale(scale);
         return await _scaleRepository.CreateScaleAsync(scale);
     }
-    
+
     /// <inheritdoc />
     public async Task<Scale?> UpdateScaleAsync(Guid scaleId, Scale scale)
     {
@@ -82,12 +82,12 @@ public class ScaleService : IScaleService
         {
             throw new ArgumentException("Scale must have at least one name");
         }
-        
+
         if (scale.Intervals == null || !scale.Intervals.Any())
         {
             throw new ArgumentException("Scale must have at least one interval");
         }
-        
+
         // Ensure names are not empty or whitespace
         if (scale.Metadata.Names.Any(name => string.IsNullOrWhiteSpace(name)))
         {

@@ -38,10 +38,11 @@ public class ScalesControllerTests : IDisposable
     {
         var filePath = Path.Combine(
             Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
-            "ApiTestRequests",
+            "TestData",
+            "Scales",
             fileName
         );
-        
+
         var json = await File.ReadAllTextAsync(filePath);
         return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
     }
@@ -149,7 +150,7 @@ public class ScalesControllerTests : IDisposable
     public async Task CreateScale_WithValidJsonPayload_ReturnsCreatedScale()
     {
         // Arrange
-        var jsonPayload = await LoadJsonPayload("MajorPentatonicScale.json");
+        var jsonPayload = await LoadJsonPayload("PentatonicMajor.json");
 
         // Act
         var response = await _client.PostAsync("/api/scales", jsonPayload);
@@ -167,12 +168,12 @@ public class ScalesControllerTests : IDisposable
     public async Task UpdateScale_WithValidData_ReturnsUpdatedScale()
     {
         // Arrange - First create a scale to update
-        var createPayload = await LoadJsonPayload("CMajorScale.json");
+        var createPayload = await LoadJsonPayload("Major.json");
         var createResponse = await _client.PostAsync("/api/scales", createPayload);
         var createdScale = await createResponse.Content.ReadFromJsonAsync<Scale>(_jsonOptions);
 
         // Update the scale
-        var updatePayload = await LoadJsonPayload("MinorPentatonicScale.json");
+        var updatePayload = await LoadJsonPayload("PentatonicMinor.json");
 
         // Act
         var response = await _client.PutAsync($"/api/scales/{createdScale!.Id}", updatePayload);
@@ -189,7 +190,7 @@ public class ScalesControllerTests : IDisposable
     public async Task DeleteScale_WithValidId_ReturnsNoContent()
     {
         // Arrange - Create a scale first
-        var createPayload = await LoadJsonPayload("MajorPentatonicScale.json");
+        var createPayload = await LoadJsonPayload("PentatonicMajor.json");
         var createResponse = await _client.PostAsync("/api/scales", createPayload);
         var createdScale = await createResponse.Content.ReadFromJsonAsync<Scale>(_jsonOptions);
 

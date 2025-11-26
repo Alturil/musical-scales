@@ -1,0 +1,52 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Lydian"
+                               ],
+                     "description":  "The fourth mode of the major scale, known for its bright and dreamy quality."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      }
+                  ]
+}

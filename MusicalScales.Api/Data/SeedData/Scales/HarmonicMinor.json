@@ -1,0 +1,52 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Harmonic Minor"
+                               ],
+                     "description":  "A minor scale with a raised 7th degree, creating a distinctive exotic sound."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  2
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Augmented",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  3
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor",
+                          "pitchOffset":  1,
+                          "semitoneOffset":  1
+                      }
+                  ]
+}

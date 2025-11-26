@@ -21,4 +21,9 @@ public interface IIntervalService
     /// Adds two intervals together
     /// </summary>
     Interval AddIntervals(Interval interval1, Interval interval2);
+
+    /// <summary>
+    /// Calculates the semitone offset for a given interval name and quality
+    /// </summary>
+    int GetSemitoneOffset(Models.Enums.IntervalSizeName name, Models.Enums.IntervalQualityName quality);
 }

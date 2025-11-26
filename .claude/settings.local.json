@@ -17,7 +17,12 @@
       "WebFetch(domain:cloudysaurus.com)",
       "Bash(dotnet add package:*)",
       "Bash(terraform fmt:*)",
-      "Bash(terraform validate:*)"
+      "Bash(terraform validate:*)",
+      "Bash(dotnet run:*)",
+      "Bash(curl.exe:*)",
+      "Bash(Select-String -Pattern \"HTTP|Content-Type|^\\[\")",
+      "Bash(dotnet ef database update:*)",
+      "Bash(Select-String -Pattern \"id\")"
     ],
     "deny": [],
     "ask": []

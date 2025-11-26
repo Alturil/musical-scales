@@ -170,12 +170,12 @@ The core musical concepts are represented as C# classes:
 **8 end-to-end tests** using WebApplicationFactory:
 - Tests all API endpoints with real HTTP requests
 - Uses in-memory database with seeded data
-- External JSON files in `ApiTestRequests/` for POST/PUT payloads
+- External JSON files in `TestData/Scales/` for POST/PUT payloads
 - Validates HTTP status codes, response formats, and JSON serialization
 
 **Test data sources:**
 - Seeded scales: Major and Natural Minor (for GET operations)
-- JSON files: MajorPentatonicScale.json, MinorPentatonicScale.json, CMajorScale.json (for CREATE/UPDATE)
+- JSON files: Major.json, MajorPentatonic.json, MinorPentatonic.json (for CREATE/UPDATE)
 
 ## Key Implementation Details
 
@@ -275,7 +275,8 @@ musical-scales/
 ├── MusicalScales.IntegrationTests/  # Integration tests (8 tests)
 │   ├── Controllers/                 # API endpoint tests
 │   ├── Fixtures/                    # Test setup (WebApplicationFactory)
-│   └── ApiTestRequests/            # JSON test payloads
+│   └── TestData/                    # Test data
+│       └── Scales/                  # JSON scale payloads
 ├── Scaffolding/                     # AWS setup automation
 │   ├── Setup-AWS.ps1               # Automated AWS infrastructure setup
 │   ├── Verify-Setup.ps1            # Verify AWS setup is correct
