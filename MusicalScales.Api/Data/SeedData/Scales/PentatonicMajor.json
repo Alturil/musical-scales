@@ -8,33 +8,23 @@
     "intervals":  [
                       {
                           "name":  "Second",
-                          "quality":  "Major",
-                          "pitchOffset":  1,
-                          "semitoneOffset":  2
+                          "quality":  "Major"
                       },
                       {
                           "name":  "Second",
-                          "quality":  "Major",
-                          "pitchOffset":  1,
-                          "semitoneOffset":  2
+                          "quality":  "Major"
                       },
                       {
                           "name":  "Third",
-                          "quality":  "Minor",
-                          "pitchOffset":  1,
-                          "semitoneOffset":  1
+                          "quality":  "Minor"
                       },
                       {
                           "name":  "Second",
-                          "quality":  "Major",
-                          "pitchOffset":  1,
-                          "semitoneOffset":  2
+                          "quality":  "Major"
                       },
                       {
                           "name":  "Third",
-                          "quality":  "Minor",
-                          "pitchOffset":  1,
-                          "semitoneOffset":  1
+                          "quality":  "Minor"
                       }
                   ]
 }

@@ -11,13 +11,15 @@ public class ScaleServiceTests
 {
     private readonly Mock<IScaleRepository> _mockScaleRepository;
     private readonly Mock<IPitchService> _mockPitchService;
+    private readonly Mock<IIntervalService> _mockIntervalService;
     private readonly ScaleService _scaleService;
 
     public ScaleServiceTests()
     {
         _mockScaleRepository = new Mock<IScaleRepository>();
         _mockPitchService = new Mock<IPitchService>();
-        _scaleService = new ScaleService(_mockScaleRepository.Object, _mockPitchService.Object);
+        _mockIntervalService = new Mock<IIntervalService>();
+        _scaleService = new ScaleService(_mockScaleRepository.Object, _mockPitchService.Object, _mockIntervalService.Object);
     }
 
     [Fact]
@@ -80,8 +82,10 @@ public class ScaleServiceTests
         result[1].Should().BeEquivalentTo(expectedSecondPitch);
         result[2].Should().BeEquivalentTo(expectedThirdPitch);
 
+        // Verify first interval is calculated from root pitch
         _mockPitchService.Verify(x => x.GetPitch(rootPitch, intervals[0]), Times.Once);
-        _mockPitchService.Verify(x => x.GetPitch(rootPitch, intervals[1]), Times.Once);
+        // Verify second interval is calculated from the previous pitch (D), not root
+        _mockPitchService.Verify(x => x.GetPitch(expectedSecondPitch, intervals[1]), Times.Once);
     }
 
     [Fact]

@@ -26,4 +26,14 @@ public interface IIntervalService
     /// Calculates the semitone offset for a given interval name and quality
     /// </summary>
     int GetSemitoneOffset(Models.Enums.IntervalSizeName name, Models.Enums.IntervalQualityName quality);
+
+    /// <summary>
+    /// Calculates the pitch offset for a given interval name
+    /// </summary>
+    int GetPitchOffset(Models.Enums.IntervalSizeName name);
+
+    /// <summary>
+    /// Populates the offsets for an interval based on its name and quality
+    /// </summary>
+    void PopulateIntervalOffsets(Interval interval);
 }

@@ -10,11 +10,13 @@ public class ScaleService : IScaleService
 {
     private readonly IScaleRepository _scaleRepository;
     private readonly IPitchService _pitchService;
+    private readonly IIntervalService _intervalService;
 
-    public ScaleService(IScaleRepository scaleRepository, IPitchService pitchService)
+    public ScaleService(IScaleRepository scaleRepository, IPitchService pitchService, IIntervalService intervalService)
     {
         _scaleRepository = scaleRepository;
         _pitchService = pitchService;
+        _intervalService = intervalService;
     }
     
     /// <inheritdoc />
@@ -60,6 +62,7 @@ public class ScaleService : IScaleService
     public async Task<Scale> CreateScaleAsync(Scale scale)
     {
         ValidateScale(scale);
+        PopulateIntervalOffsets(scale);
         return await _scaleRepository.CreateScaleAsync(scale);
     }
 
@@ -67,6 +70,7 @@ public class ScaleService : IScaleService
     public async Task<Scale?> UpdateScaleAsync(Guid scaleId, Scale scale)
     {
         ValidateScale(scale);
+        PopulateIntervalOffsets(scale);
         return await _scaleRepository.UpdateScaleAsync(scaleId, scale);
     }
     
@@ -92,6 +96,16 @@ public class ScaleService : IScaleService
         if (scale.Metadata.Names.Any(name => string.IsNullOrWhiteSpace(name)))
         {
             throw new ArgumentException("Scale names cannot be empty or whitespace");
+        }
+    }
+
+    private void PopulateIntervalOffsets(Scale scale)
+    {
+        if (scale.Intervals == null) return;
+
+        foreach (var interval in scale.Intervals)
+        {
+            _intervalService.PopulateIntervalOffsets(interval);
         }
     }
 }

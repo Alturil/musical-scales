@@ -124,6 +124,30 @@ public class IntervalService : IIntervalService
         };
     }
 
+    /// <inheritdoc />
+    public int GetPitchOffset(IntervalSizeName name)
+    {
+        return name switch
+        {
+            IntervalSizeName.Unison => 0,
+            IntervalSizeName.Second => 1,
+            IntervalSizeName.Third => 2,
+            IntervalSizeName.Fourth => 3,
+            IntervalSizeName.Fifth => 4,
+            IntervalSizeName.Sixth => 5,
+            IntervalSizeName.Seventh => 6,
+            IntervalSizeName.Octave => 7,
+            _ => throw new ArgumentException($"Invalid interval size '{name}'")
+        };
+    }
+
+    /// <inheritdoc />
+    public void PopulateIntervalOffsets(Interval interval)
+    {
+        interval.PitchOffset = GetPitchOffset(interval.Name);
+        interval.SemitoneOffset = GetSemitoneOffset(interval.Name, interval.Quality);
+    }
+
     private static IntervalQualityName DetermineIntervalQuality(IntervalSizeName size, int semitones)
     {
         return size switch
