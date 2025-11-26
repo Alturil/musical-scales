@@ -19,6 +19,7 @@
       "Action": [
         "lambda:*",
         "apigateway:*",
+        "dynamodb:*",
         "iam:CreateRole",
         "iam:DeleteRole",
         "iam:GetRole",

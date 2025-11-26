@@ -8,6 +8,8 @@ This repository serves as a demonstration of:
 - **Modern .NET Patterns**: Built with .NET 8, Entity Framework Core, and contemporary API design practices
 - **CRUD Operations**: Full create, read, update, and delete functionality for musical scales
 - **API Documentation**: Complete OpenAPI/Swagger documentation for all endpoints
+- **Serverless Architecture**: AWS Lambda + API Gateway + DynamoDB for production deployment
+- **Dual Database Support**: SQLite for local development, DynamoDB for AWS Lambda
 
 The main objective is to showcase how complex musical relationships can be modeled and manipulated through code, making music theory concepts accessible programmatically.
 
@@ -28,7 +30,28 @@ The main objective is to showcase how complex musical relationships can be model
    - **HTTPS**: https://localhost:5001
    - **Health Check**: http://localhost:5000/health
 
-The API will start with some pre-seeded scales (Major and Natural Minor) for immediate testing and exploration.
+The API will start with some pre-seeded scales (Major, Minor, Modes, Pentatonic) for immediate testing and exploration.
+
+## Database Architecture
+
+The API uses a **dual database strategy**:
+
+### Local Development (SQLite)
+- **Database**: SQLite file-based database
+- **Location**: `musicscales.db` in the project directory
+- **Benefits**: Simple setup, no external dependencies, easy to reset
+- **Use Case**: Local development and testing
+
+### AWS Lambda (DynamoDB)
+- **Database**: AWS DynamoDB serverless NoSQL database
+- **Detection**: Automatically uses DynamoDB when `AWS_EXECUTION_ENV` environment variable is present
+- **Benefits**: Serverless, scalable, persistent storage, pay-per-use pricing
+- **Free Tier**: 25 GB storage, 25 WCU, 25 RCU per month
+- **Table Structure**:
+  - **Partition Key**: `Id` (GUID)
+  - **Attributes**: `Metadata` (JSON), `Intervals` (JSON), `CreatedAt`, `UpdatedAt`, `IntervalsHash`, `NamesSearchable`
+
+The database provider is automatically selected based on the runtime environment, requiring no code changes or configuration.
 
 ### Available Endpoints
 
@@ -105,12 +128,25 @@ musical-scales/
 │   ├── Models/                     # Domain models
 │   ├── Data/                       # Entity Framework context
 │   └── Repositories/               # Data access layer
+│       ├── IScaleRepository.cs     # Repository interface
+│       ├── ScaleRepository.cs      # SQLite implementation (EF Core)
+│       └── DynamoDbScaleRepository.cs  # DynamoDB implementation
 ├── MusicalScales.Tests/             # Unit test project (110+ tests)
 │   ├── Services/                   # Service layer tests
 │   └── README.md                   # Unit testing documentation
-└── MusicalScales.IntegrationTests/ # Integration test project (8 tests)
-    ├── Controllers/                 # API endpoint tests
-    ├── Fixtures/                   # Test setup and data
-    ├── ApiTestRequests/            # JSON test payloads
-    └── README.md                   # Integration testing documentation
+├── MusicalScales.IntegrationTests/ # Integration test project (8 tests)
+│   ├── Controllers/                 # API endpoint tests
+│   ├── Fixtures/                   # Test setup and data
+│   ├── ApiTestRequests/            # JSON test payloads
+│   └── README.md                   # Integration testing documentation
+├── terraform/                       # Infrastructure as Code
+│   ├── main.tf                     # Main Terraform configuration
+│   ├── lambda.tf                   # Lambda function definition
+│   ├── api_gateway.tf              # API Gateway configuration
+│   ├── dynamodb.tf                 # DynamoDB table definition
+│   └── variables.tf                # Terraform variables
+└── Scaffolding/                     # AWS setup scripts
+    ├── Setup-AWS.ps1               # Automated AWS resource creation
+    ├── Verify-Setup.ps1            # Validate AWS configuration
+    └── README.md                   # Setup documentation
 ```

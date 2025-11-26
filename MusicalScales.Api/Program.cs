@@ -4,6 +4,8 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MusicalScales.Api.Data;
+using MusicalScales.Api.Models;
+using MusicalScales.Api.Models.Enums;
 using MusicalScales.Api.Repositories;
 using MusicalScales.Api.Services;
 
@@ -20,26 +22,41 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
-// Configure Entity Framework
-// Lambda filesystem is read-only except /tmp, so use /tmp for database
+// Configure database provider based on environment
 var isLambda = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS_EXECUTION_ENV"));
-var connectionString = isLambda
-    ? "Data Source=/tmp/musicscales.db"
-    : (builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=musicscales.db");
-
 Console.WriteLine($"Running in Lambda: {isLambda}");
-Console.WriteLine($"Using connection string: {connectionString}");
 
-builder.Services.AddDbContext<MusicalScalesDbContext>(options => options.UseSqlite(connectionString));
+if (isLambda)
+{
+    // Use DynamoDB in Lambda
+    Console.WriteLine("Using DynamoDB for data storage");
+    builder.Services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
+    builder.Services.AddScoped<IScaleRepository, DynamoDbScaleRepository>();
+}
+else
+{
+    // Use SQLite for local development
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=musicscales.db";
+    Console.WriteLine($"Using SQLite: {connectionString}");
 
-// Register repositories
-builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
+    builder.Services.AddDbContext<MusicalScalesDbContext>(options => options.UseSqlite(connectionString));
+    builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
+}
 
 // Register services
 builder.Services.AddScoped<IScaleService, ScaleService>();
 builder.Services.AddScoped<IPitchService, PitchService>();
 builder.Services.AddScoped<IIntervalService, IntervalService>();
-builder.Services.AddScoped<DatabaseSeeder>();
+
+// Register appropriate seeder based on environment
+if (isLambda)
+{
+    builder.Services.AddScoped<DynamoDbSeeder>();
+}
+else
+{
+    builder.Services.AddScoped<DatabaseSeeder>();
+}
 
 // Register the Swagger generator, defining 1 or more Swagger documents
 builder.Services.AddSwaggerGen(c =>
@@ -94,10 +111,23 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 // Initialize database
-using (var scope = app.Services.CreateScope())
+if (isLambda)
 {
-    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-    await seeder.SeedAsync();
+    // Seed DynamoDB with standard scales
+    using (var scope = app.Services.CreateScope())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DynamoDbSeeder>();
+        await seeder.SeedAsync();
+    }
+}
+else
+{
+    // Seed SQLite database
+    using (var scope = app.Services.CreateScope())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        await seeder.SeedAsync();
+    }
 }
 
 Console.WriteLine("🎵 Musical Scales API");

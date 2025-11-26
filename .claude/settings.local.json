@@ -14,7 +14,8 @@
       "Bash(powershell:*)",
       "Bash(Remove-Item \"C:\\Repos\\musical-scales\\Scaffolding\\Test-Syntax.ps1\")",
       "WebSearch",
-      "WebFetch(domain:cloudysaurus.com)"
+      "WebFetch(domain:cloudysaurus.com)",
+      "Bash(dotnet add package:*)"
     ],
     "deny": [],
     "ask": []
