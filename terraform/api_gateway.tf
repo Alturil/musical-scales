@@ -103,6 +103,9 @@ resource "aws_api_gateway_stage" "main" {
       responseLength = "$context.responseLength"
     })
   }
+
+  # Ensure account settings are configured before creating stage
+  depends_on = [aws_api_gateway_account.main]
 }
 
 # API Gateway Method Settings (throttling)
