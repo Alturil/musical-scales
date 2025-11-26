@@ -1,8 +1,8 @@
 # DynamoDB table for Musical Scales
 resource "aws_dynamodb_table" "scales" {
-  name           = "musical-scales-${var.environment}"
-  billing_mode   = "PAY_PER_REQUEST" # On-demand pricing (free tier: 25 WCU, 25 RCU)
-  hash_key       = "Id"
+  name         = "musical-scales-${var.environment}"
+  billing_mode = "PAY_PER_REQUEST" # On-demand pricing (free tier: 25 WCU, 25 RCU)
+  hash_key     = "Id"
 
   attribute {
     name = "Id"

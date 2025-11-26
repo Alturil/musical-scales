@@ -15,7 +15,9 @@
       "Bash(Remove-Item \"C:\\Repos\\musical-scales\\Scaffolding\\Test-Syntax.ps1\")",
       "WebSearch",
       "WebFetch(domain:cloudysaurus.com)",
-      "Bash(dotnet add package:*)"
+      "Bash(dotnet add package:*)",
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)"
     ],
     "deny": [],
     "ask": []

@@ -59,14 +59,14 @@ resource "aws_iam_role_policy" "lambda_logging" {
 resource "aws_lambda_function" "api" {
   function_name = "${var.function_name}-${var.environment}"
   role          = aws_iam_role.lambda_execution.arn
-  handler       = var.function_name
-  runtime       = var.lambda_runtime
-  memory_size   = var.lambda_memory_size
-  timeout       = var.lambda_timeout
+  handler       = "MusicalScales.Api" # Must match assembly name, not function name
+  runtime       = "dotnet8"
+  memory_size   = 512
+  timeout       = 30
 
   # Use local zip file instead of S3
-  filename         = var.lambda_package_local_path
-  source_code_hash = filebase64sha256(var.lambda_package_local_path)
+  filename         = "../lambda-package.zip"
+  source_code_hash = filebase64sha256("../lambda-package.zip")
 
   environment {
     variables = {

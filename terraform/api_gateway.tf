@@ -17,19 +17,19 @@ resource "aws_api_gateway_resource" "proxy" {
 
 # API Gateway Method (ANY for proxy)
 resource "aws_api_gateway_method" "proxy" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
+  rest_api_id      = aws_api_gateway_rest_api.main.id
+  resource_id      = aws_api_gateway_resource.proxy.id
+  http_method      = "ANY"
+  authorization    = "NONE"
   api_key_required = true
 }
 
 # API Gateway Method for root
 resource "aws_api_gateway_method" "root" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_rest_api.main.root_resource_id
-  http_method   = "ANY"
-  authorization = "NONE"
+  rest_api_id      = aws_api_gateway_rest_api.main.id
+  resource_id      = aws_api_gateway_rest_api.main.root_resource_id
+  http_method      = "ANY"
+  authorization    = "NONE"
   api_key_required = true
 }
 
@@ -83,7 +83,7 @@ resource "aws_api_gateway_deployment" "main" {
 resource "aws_api_gateway_stage" "main" {
   deployment_id = aws_api_gateway_deployment.main.id
   rest_api_id   = aws_api_gateway_rest_api.main.id
-  stage_name    = var.api_stage_name
+  stage_name    = "v1"
 
   # Enable CloudWatch Logs
   xray_tracing_enabled = false
