@@ -113,14 +113,32 @@ jobs:
           API_KEY=${{ steps.api_key.outputs.API_KEY }}
 
           echo "Testing health check endpoint..."
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+          echo "API URL: ${API_URL}/health"
+
+          if [ -z "$API_KEY" ]; then
+            echo "❌ API Key is empty!"
+            exit 1
+          fi
+
+          echo "API Key length: ${#API_KEY}"
+
+          # Test with verbose curl to see what's happening
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
             -H "x-api-key: ${API_KEY}" \
             "${API_URL}/health")
 
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
           if [ "$HTTP_CODE" -eq 200 ]; then
             echo "✅ Health check passed (HTTP $HTTP_CODE)"
+            echo "Response: $BODY"
           else
             echo "❌ Health check failed (HTTP $HTTP_CODE)"
+            echo "Response: $BODY"
+            echo ""
+            echo "Debugging - trying without API key to see error:"
+            curl -i "${API_URL}/health"
             exit 1
           fi
 
