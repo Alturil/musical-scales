@@ -21,7 +21,15 @@ builder.Services.AddControllers()
     });
 
 // Configure Entity Framework
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=musicscales.db";
+// Lambda filesystem is read-only except /tmp, so use /tmp for database
+var isLambda = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS_EXECUTION_ENV"));
+var connectionString = isLambda
+    ? "Data Source=/tmp/musicscales.db"
+    : (builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=musicscales.db");
+
+Console.WriteLine($"Running in Lambda: {isLambda}");
+Console.WriteLine($"Using connection string: {connectionString}");
+
 builder.Services.AddDbContext<MusicalScalesDbContext>(options => options.UseSqlite(connectionString));
 
 // Register repositories
