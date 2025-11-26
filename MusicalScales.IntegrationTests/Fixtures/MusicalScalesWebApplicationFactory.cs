@@ -33,17 +33,11 @@ public class MusicalScalesWebApplicationFactory : WebApplicationFactory<Program>
             if (descriptor != null)
                 services.Remove(descriptor);
 
-            // Remove DatabaseSeeder to prevent auto-seeding during tests
-            services.RemoveAll<DatabaseSeeder>();
-
             // Add InMemory database with unique name for isolation
             services.AddDbContext<MusicalScalesDbContext>(options =>
             {
                 options.UseInMemoryDatabase(_databaseName);
             });
-
-            // Register a mock DatabaseSeeder that does nothing
-            services.AddScoped<DatabaseSeeder, MockDatabaseSeeder>();
 
             // Ensure JSON serialization matches the API exactly
             services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
@@ -83,22 +77,5 @@ public class MusicalScalesWebApplicationFactory : WebApplicationFactory<Program>
             Converters = { new JsonStringEnumConverter() },
             PropertyNamingPolicy = null
         };
-    }
-}
-
-/// <summary>
-/// Mock DatabaseSeeder that does nothing - used for testing to avoid conflicts
-/// </summary>
-public class MockDatabaseSeeder : DatabaseSeeder
-{
-    public MockDatabaseSeeder(MusicalScalesDbContext context, ILogger<DatabaseSeeder> logger)
-        : base(context, logger)
-    {
-    }
-
-    public new async Task SeedAsync()
-    {
-        // Do nothing - we'll seed test data manually in tests
-        await Task.CompletedTask;
     }
 }

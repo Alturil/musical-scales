@@ -1,0 +1,38 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Phrygian"
+                               ],
+                     "description":  "The third mode of the major scale, with a distinctive Spanish or Middle Eastern flavor."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      }
+                  ]
+}

@@ -1,0 +1,39 @@
+{
+    "metadata":  {
+                     "names":  [
+                                   "Melodic Minor",
+                                   "Jazz Minor"
+                               ],
+                     "description":  "A minor scale with raised 6th and 7th degrees ascending."
+                 },
+    "intervals":  [
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Major"
+                      },
+                      {
+                          "name":  "Second",
+                          "quality":  "Minor"
+                      }
+                  ]
+}

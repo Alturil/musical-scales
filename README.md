@@ -30,7 +30,35 @@ The main objective is to showcase how complex musical relationships can be model
    - **HTTPS**: https://localhost:5001
    - **Health Check**: http://localhost:5000/health
 
-The API will start with some pre-seeded scales (Major, Minor, Modes, Pentatonic) for immediate testing and exploration.
+3. **Populate the Database** (optional but recommended)
+
+   The API starts with an empty database. To populate it with sample scales, use the provided PowerShell script:
+
+   ```powershell
+   # Populate local database with all sample scales
+   .\Populate-Scales.ps1
+
+   # Or populate a specific environment
+   .\Populate-Scales.ps1 -Environment local
+
+   # For AWS dev environment (requires API key)
+   .\Populate-Scales.ps1 -Environment dev -ApiKey "your-api-key-here"
+   ```
+
+   This will populate the database with 11 pre-defined scales:
+   - Major (Ionian)
+   - Natural Minor (Aeolian)
+   - Harmonic Minor
+   - Melodic Minor
+   - Dorian
+   - Phrygian
+   - Lydian
+   - Mixolydian
+   - Locrian
+   - Pentatonic Major
+   - Pentatonic Minor
+
+   The scales are loaded from `MusicalScales.Api/Data/SeedData/Scales/` and created via the API's `POST /api/scales` endpoint.
 
 ## Database Architecture
 
@@ -127,6 +155,7 @@ musical-scales/
 │   ├── Services/                   # Business logic services
 │   ├── Models/                     # Domain models
 │   ├── Data/                       # Entity Framework context
+│   │   └── SeedData/Scales/        # Sample scale JSON files
 │   └── Repositories/               # Data access layer
 │       ├── IScaleRepository.cs     # Repository interface
 │       ├── ScaleRepository.cs      # SQLite implementation (EF Core)
@@ -137,7 +166,7 @@ musical-scales/
 ├── MusicalScales.IntegrationTests/ # Integration test project (8 tests)
 │   ├── Controllers/                 # API endpoint tests
 │   ├── Fixtures/                   # Test setup and data
-│   ├── ApiTestRequests/            # JSON test payloads
+│   ├── TestData/Scales/            # JSON scale test payloads
 │   └── README.md                   # Integration testing documentation
 ├── terraform/                       # Infrastructure as Code
 │   ├── main.tf                     # Main Terraform configuration
@@ -145,8 +174,13 @@ musical-scales/
 │   ├── api_gateway.tf              # API Gateway configuration
 │   ├── dynamodb.tf                 # DynamoDB table definition
 │   └── variables.tf                # Terraform variables
-└── Scaffolding/                     # AWS setup scripts
-    ├── Setup-AWS.ps1               # Automated AWS resource creation
-    ├── Verify-Setup.ps1            # Validate AWS configuration
-    └── README.md                   # Setup documentation
+├── Scaffolding/                     # AWS setup scripts
+│   ├── Setup-AWS.ps1               # Automated AWS resource creation
+│   ├── Verify-Setup.ps1            # Validate AWS configuration
+│   └── README.md                   # Setup documentation
+├── Debugging/                       # Development debugging scripts
+│   ├── get-scale-pitches.ps1       # Display scale pitches
+│   └── README.md                   # Debugging scripts documentation
+├── Populate-Scales.ps1              # Database population script
+└── README.md                        # This file
 ```

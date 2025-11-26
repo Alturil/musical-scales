@@ -41,22 +41,15 @@ The GET endpoint tests use pre-seeded scales in the in-memory database:
 - **Natural Minor Scale/Aeolian Mode**: Standard 7-note minor scale
 
 #### 2. **JSON Test Payloads** 📄
-The CREATE/UPDATE tests use external JSON files for realistic data:
+The CREATE/UPDATE tests use external JSON files for realistic data. The TestData/Scales folder contains JSON files for all 11 scales that are seeded in the database:
 
-**`MajorPentatonicScale.json`**
-- 5-note pentatonic scale with major intervals
-- Used for POST (create) operations
-- Tests JSON deserialization and scale creation
+**Test Files Used:**
+- **`PentatonicMajor.json`** - Used for POST (create) and DELETE operations
+- **`PentatonicMinor.json`** - Used for PUT (update) operations
+- **`Major.json`** - Used for creating scales to be updated
 
-**`MinorPentatonicScale.json`**
-- 5-note pentatonic scale with minor intervals  
-- Used for PUT (update) operations
-- Tests JSON deserialization and scale updates
-
-**`CMajorScale.json`**
-- 7-note major scale (C-D-E-F-G-A-B)
-- Used for creating scales to be updated/deleted
-- Tests complex interval structures
+**All Available Scale Files:**
+Major, NaturalMinor, HarmonicMinor, MelodicMinor, Dorian, Phrygian, Lydian, Mixolydian, Locrian, PentatonicMajor, PentatonicMinor
 
 ## Project Structure
 
@@ -66,10 +59,19 @@ MusicalScales.IntegrationTests/
 │   └── ScalesControllerTests.cs          # Main integration tests (8 tests)
 ├── Fixtures/
 │   └── MusicalScalesWebApplicationFactory.cs  # Test app factory setup
-├── ApiTestRequests/                      # JSON test payloads
-│   ├── MajorPentatonicScale.json        # POST test data
-│   ├── MinorPentatonicScale.json        # PUT test data  
-│   └── CMajorScale.json                 # Scale creation data
+├── TestData/                             # Test data
+│   └── Scales/                           # JSON scale payloads (11 files)
+│       ├── Major.json                   # Major scale (Ionian mode)
+│       ├── NaturalMinor.json           # Natural minor (Aeolian mode)
+│       ├── HarmonicMinor.json          # Harmonic minor
+│       ├── MelodicMinor.json           # Melodic minor (Jazz minor)
+│       ├── Dorian.json                 # Dorian mode
+│       ├── Phrygian.json               # Phrygian mode
+│       ├── Lydian.json                 # Lydian mode
+│       ├── Mixolydian.json             # Mixolydian mode
+│       ├── Locrian.json                # Locrian mode
+│       ├── PentatonicMajor.json        # Major pentatonic scale
+│       └── PentatonicMinor.json        # Minor pentatonic (Blues scale)
 ├── MusicalScales.IntegrationTests.csproj # Project configuration
 └── README.md                             # This documentation
 ```
@@ -173,12 +175,15 @@ Following the pattern from the original project:
 5. **System.Text.Json**: Modern serialization without external dependencies
 
 ### Realistic Musical Data
-The JSON test files contain authentic musical scales:
-- **Major Pentatonic**: 5-note scale with realistic interval structure
-- **Minor Pentatonic**: Blues-friendly pentatonic variation
-- **C Major**: Complete 7-note major scale for complex operations
+The JSON test files contain authentic musical scales representing all scales seeded in the database:
+- **7 Modal Scales**: Major (Ionian), Dorian, Phrygian, Lydian, Mixolydian, Aeolian (Natural Minor), Locrian
+- **3 Minor Variations**: Natural Minor, Harmonic Minor, Melodic Minor
+- **2 Pentatonic Scales**: Major Pentatonic, Minor Pentatonic (Blues)
 
-This ensures the API works correctly with real musical data while keeping tests simple and maintainable.
+All files follow the established convention:
+- Only `name` and `quality` fields for intervals (offsets calculated automatically)
+- camelCase property names
+- Filenames based on first scale name (no "Scale" suffix, no root pitch)
 
 ## Integration with Unit Tests
 
@@ -268,7 +273,7 @@ dotnet test MusicalScales.IntegrationTests --verbosity normal
 When adding new integration tests:
 
 1. **Follow Naming Conventions**: `MethodName_Scenario_ExpectedResult`
-2. **Use External JSON**: Add new test data to `ApiTestRequests/` directory
+2. **Use External JSON**: Add new test data to `TestData/Scales/` directory
 3. **Keep It Simple**: Focus on HTTP status codes and basic response validation
 4. **One Test Per Scenario**: Clear, focused test methods
 5. **StringContent Pattern**: Use the established `LoadJsonPayload` helper method
@@ -277,25 +282,23 @@ When adding new integration tests:
 
 To add new JSON test payloads:
 
-1. Create new `.json` files in `ApiTestRequests/` directory
-2. Follow the existing JSON structure (with `Metadata` and `Intervals` properties)
-3. Include proper `Name`, `Quality`, `PitchOffset`, and `SemitoneOffset` for intervals
+1. Create new `.json` files in `TestData/Scales/` directory
+2. Follow the existing JSON structure (with `metadata` and `intervals` properties)
+3. Include only `name` and `quality` fields for intervals (offsets are calculated automatically)
 4. Add corresponding test methods using the `LoadJsonPayload` helper
-5. Update project file to copy new JSON files to output directory
+5. JSON files are automatically copied to output directory via project file pattern
 
 ### Example JSON Structure
 ```json
 {
-  "Metadata": {
-    "Names": ["Scale Name"],
-    "Description": "Scale description"
+  "metadata": {
+    "names": ["Scale Name"],
+    "description": "Scale description"
   },
-  "Intervals": [
+  "intervals": [
     {
-      "Name": "Second",
-      "Quality": "Major",
-      "PitchOffset": 1,
-      "SemitoneOffset": 2
+      "name": "Second",
+      "quality": "Major"
     }
   ]
 }

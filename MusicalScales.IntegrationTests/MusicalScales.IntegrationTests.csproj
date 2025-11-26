@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ApiTestRequests\*.json">
+    <Content Include="..\MusicalScales.Api\Data\SeedData\**\*.json" Link="TestData\Scales\%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

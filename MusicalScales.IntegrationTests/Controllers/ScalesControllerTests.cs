@@ -38,12 +38,30 @@ public class ScalesControllerTests : IDisposable
     {
         var filePath = Path.Combine(
             Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
-            "ApiTestRequests",
+            "TestData",
+            "Scales",
             fileName
         );
-        
+
         var json = await File.ReadAllTextAsync(filePath);
         return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+    }
+
+    private async Task SeedScalesAsync()
+    {
+        var scalesDir = Path.Combine(
+            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
+            "TestData",
+            "Scales"
+        );
+
+        var files = Directory.GetFiles(scalesDir, "*.json");
+        foreach (var file in files)
+        {
+            var json = await File.ReadAllTextAsync(file);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            await _client.PostAsync("/api/scales", content);
+        }
     }
 
     #endregion
@@ -53,6 +71,9 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetAllScales_ReturnsSeededScales()
     {
+        // Arrange
+        await SeedScalesAsync();
+
         // Act
         var response = await _client.GetAsync("/api/scales");
         var scales = await response.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
@@ -60,7 +81,7 @@ public class ScalesControllerTests : IDisposable
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         scales.Should().NotBeNull();
-        scales!.Should().HaveCount(2); // DatabaseSeeder seeds 2 scales
+        scales!.Should().HaveCount(11); // DatabaseSeeder seeds 11 scales
         scales.Should().Contain(s => s.Metadata.Names.Any(name => name.Contains("Major")));
     }
 
@@ -71,7 +92,8 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetScaleById_WithValidId_ReturnsScale()
     {
-        // Arrange - Get ID from seeded data
+        // Arrange - Seed data and get ID
+        await SeedScalesAsync();
         var allScalesResponse = await _client.GetAsync("/api/scales");
         var allScales = await allScalesResponse.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
         var validId = allScales!.First().Id;
@@ -106,6 +128,9 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task SearchScalesByName_WithValidName_ReturnsMatchingScales()
     {
+        // Arrange
+        await SeedScalesAsync();
+
         // Act
         var response = await _client.GetAsync("/api/scales/search?name=Major");
         var scales = await response.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
@@ -124,7 +149,8 @@ public class ScalesControllerTests : IDisposable
     [Fact]
     public async Task GetScalePitches_WithValidScale_ReturnsCorrectPitches()
     {
-        // Arrange - Get ID from seeded data
+        // Arrange - Seed data and get ID
+        await SeedScalesAsync();
         var allScalesResponse = await _client.GetAsync("/api/scales");
         var allScales = await allScalesResponse.Content.ReadFromJsonAsync<List<Scale>>(_jsonOptions);
         var scaleId = allScales!.First().Id;
@@ -149,7 +175,7 @@ public class ScalesControllerTests : IDisposable
     public async Task CreateScale_WithValidJsonPayload_ReturnsCreatedScale()
     {
         // Arrange
-        var jsonPayload = await LoadJsonPayload("MajorPentatonicScale.json");
+        var jsonPayload = await LoadJsonPayload("PentatonicMajor.json");
 
         // Act
         var response = await _client.PostAsync("/api/scales", jsonPayload);
@@ -167,12 +193,12 @@ public class ScalesControllerTests : IDisposable
     public async Task UpdateScale_WithValidData_ReturnsUpdatedScale()
     {
         // Arrange - First create a scale to update
-        var createPayload = await LoadJsonPayload("CMajorScale.json");
+        var createPayload = await LoadJsonPayload("Major.json");
         var createResponse = await _client.PostAsync("/api/scales", createPayload);
         var createdScale = await createResponse.Content.ReadFromJsonAsync<Scale>(_jsonOptions);
 
         // Update the scale
-        var updatePayload = await LoadJsonPayload("MinorPentatonicScale.json");
+        var updatePayload = await LoadJsonPayload("PentatonicMinor.json");
 
         // Act
         var response = await _client.PutAsync($"/api/scales/{createdScale!.Id}", updatePayload);
@@ -189,7 +215,7 @@ public class ScalesControllerTests : IDisposable
     public async Task DeleteScale_WithValidId_ReturnsNoContent()
     {
         // Arrange - Create a scale first
-        var createPayload = await LoadJsonPayload("MajorPentatonicScale.json");
+        var createPayload = await LoadJsonPayload("PentatonicMajor.json");
         var createResponse = await _client.PostAsync("/api/scales", createPayload);
         var createdScale = await createResponse.Content.ReadFromJsonAsync<Scale>(_jsonOptions);
 

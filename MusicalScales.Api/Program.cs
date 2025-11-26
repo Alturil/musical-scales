@@ -48,15 +48,6 @@ builder.Services.AddScoped<IScaleService, ScaleService>();
 builder.Services.AddScoped<IPitchService, PitchService>();
 builder.Services.AddScoped<IIntervalService, IntervalService>();
 
-// Register appropriate seeder based on environment
-if (isLambda)
-{
-    builder.Services.AddScoped<DynamoDbSeeder>();
-}
-else
-{
-    builder.Services.AddScoped<DatabaseSeeder>();
-}
 
 // Register the Swagger generator, defining 1 or more Swagger documents
 builder.Services.AddSwaggerGen(c =>
@@ -119,23 +110,13 @@ app.UseSwaggerUI(c =>
 app.MapControllers();
 app.MapHealthChecks("/health");
 
-// Initialize database
-if (isLambda)
+// Initialize database (create tables if they don't exist)
+if (!isLambda)
 {
-    // Seed DynamoDB with standard scales
     using (var scope = app.Services.CreateScope())
     {
-        var seeder = scope.ServiceProvider.GetRequiredService<DynamoDbSeeder>();
-        await seeder.SeedAsync();
-    }
-}
-else
-{
-    // Seed SQLite database
-    using (var scope = app.Services.CreateScope())
-    {
-        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-        await seeder.SeedAsync();
+        var context = scope.ServiceProvider.GetRequiredService<MusicalScalesDbContext>();
+        await context.Database.EnsureCreatedAsync();
     }
 }
 

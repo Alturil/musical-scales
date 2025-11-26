@@ -10,11 +10,13 @@ public class ScaleService : IScaleService
 {
     private readonly IScaleRepository _scaleRepository;
     private readonly IPitchService _pitchService;
-    
-    public ScaleService(IScaleRepository scaleRepository, IPitchService pitchService)
+    private readonly IIntervalService _intervalService;
+
+    public ScaleService(IScaleRepository scaleRepository, IPitchService pitchService, IIntervalService intervalService)
     {
         _scaleRepository = scaleRepository;
         _pitchService = pitchService;
+        _intervalService = intervalService;
     }
     
     /// <inheritdoc />
@@ -25,7 +27,7 @@ public class ScaleService : IScaleService
         var currentPitch = rootPitch;
         foreach (var interval in scaleIntervals)
         {
-            currentPitch = _pitchService.GetPitch(rootPitch, interval);
+            currentPitch = _pitchService.GetPitch(currentPitch, interval);
             scalePitches.Add(currentPitch);
         }
         
@@ -60,13 +62,15 @@ public class ScaleService : IScaleService
     public async Task<Scale> CreateScaleAsync(Scale scale)
     {
         ValidateScale(scale);
+        PopulateIntervalOffsets(scale);
         return await _scaleRepository.CreateScaleAsync(scale);
     }
-    
+
     /// <inheritdoc />
     public async Task<Scale?> UpdateScaleAsync(Guid scaleId, Scale scale)
     {
         ValidateScale(scale);
+        PopulateIntervalOffsets(scale);
         return await _scaleRepository.UpdateScaleAsync(scaleId, scale);
     }
     
@@ -82,16 +86,26 @@ public class ScaleService : IScaleService
         {
             throw new ArgumentException("Scale must have at least one name");
         }
-        
+
         if (scale.Intervals == null || !scale.Intervals.Any())
         {
             throw new ArgumentException("Scale must have at least one interval");
         }
-        
+
         // Ensure names are not empty or whitespace
         if (scale.Metadata.Names.Any(name => string.IsNullOrWhiteSpace(name)))
         {
             throw new ArgumentException("Scale names cannot be empty or whitespace");
+        }
+    }
+
+    private void PopulateIntervalOffsets(Scale scale)
+    {
+        if (scale.Intervals == null) return;
+
+        foreach (var interval in scale.Intervals)
+        {
+            _intervalService.PopulateIntervalOffsets(interval);
         }
     }
 }
