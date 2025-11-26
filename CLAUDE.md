@@ -12,6 +12,16 @@ This is a .NET 8 Web API that models musical theory concepts (scales, intervals,
 - xUnit testing framework
 - Swagger/OpenAPI documentation
 
+## Project History
+
+This repository was migrated and reworked from an older project originally hosted on GitLab. The original codebase can be found at: https://gitlab.com/Alturil/musicscales
+
+The current version has been modernized with:
+- Upgraded to .NET 8
+- Comprehensive test suite (110+ unit tests, 8 integration tests)
+- Modern API patterns and best practices
+- Improved architecture and code organization
+
 ## Common Commands
 
 ### Running the API
