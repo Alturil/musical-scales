@@ -18,7 +18,7 @@ public class PitchService : IPitchService
         { DiatonicPitchName.A, 9 },
         { DiatonicPitchName.B, 11 }
     };
-    
+
     private static readonly Dictionary<AccidentalName, int> AccidentalOffsets = new()
     {
         { AccidentalName.DoubleFlat, -2 },
@@ -27,7 +27,7 @@ public class PitchService : IPitchService
         { AccidentalName.Sharp, 1 },
         { AccidentalName.DoubleSharp, 2 }
     };
-    
+
     /// <inheritdoc />
     public Pitch GetPitch(Pitch startingPitch, Interval interval)
     {
@@ -35,16 +35,16 @@ public class PitchService : IPitchService
         var expectedSemitones = (GetPitchSemitones(startingPitch) + interval.SemitoneOffset) % 12;
         var actualSemitones = PitchSemitones[newPitchName];
         var accidentalOffset = expectedSemitones - actualSemitones;
-        
+
         // Handle wrap-around for negative values
         // TODO: this might be defensive coding, but not a real life scenario
         if (accidentalOffset < -6)
             accidentalOffset += 12;
         else if (accidentalOffset > 6)
             accidentalOffset -= 12;
-            
+
         var accidental = GetAccidentalFromOffset(accidentalOffset);
-        
+
         return new Pitch
         {
             Name = newPitchName,
@@ -53,20 +53,20 @@ public class PitchService : IPitchService
             SemitoneOffset = startingPitch.SemitoneOffset + interval.SemitoneOffset
         };
     }
-    
+
     /// <inheritdoc />
     public Interval GetInterval(Pitch fromPitch, Pitch toPitch)
     {
         var pitchOffset = toPitch.PitchOffset - fromPitch.PitchOffset;
         var semitoneOffset = toPitch.SemitoneOffset - fromPitch.SemitoneOffset;
-        
+
         // Normalize to positive values
         while (pitchOffset < 0) pitchOffset += 7;
         while (semitoneOffset < 0) semitoneOffset += 12;
-        
+
         var intervalSize = (IntervalSizeName)(pitchOffset % 7);
         var quality = DetermineIntervalQuality(intervalSize, semitoneOffset % 12);
-        
+
         return new Interval
         {
             Name = intervalSize,
@@ -75,12 +75,12 @@ public class PitchService : IPitchService
             SemitoneOffset = semitoneOffset
         };
     }
-    
+
     /// <inheritdoc />
     public Pitch TransposePitch(Pitch pitch, int semitones)
     {
         var newSemitoneOffset = pitch.SemitoneOffset + semitones;
-        
+
         return new Pitch
         {
             Name = pitch.Name,
@@ -89,23 +89,23 @@ public class PitchService : IPitchService
             SemitoneOffset = newSemitoneOffset
         };
     }
-    
+
     private static DiatonicPitchName GetDiatonicPitchName(DiatonicPitchName startingPitch, int offset)
     {
         var pitchIndex = (int)startingPitch;
         var newPitchIndex = (pitchIndex + offset) % 7;
-        
+
         if (newPitchIndex < 0)
             newPitchIndex += 7;
-            
+
         return (DiatonicPitchName)newPitchIndex;
     }
-    
+
     private static int GetPitchSemitones(Pitch pitch)
     {
         return PitchSemitones[pitch.Name] + AccidentalOffsets[pitch.Accidental];
     }
-    
+
     private static AccidentalName GetAccidentalFromOffset(int offset)
     {
         return offset switch
@@ -118,7 +118,7 @@ public class PitchService : IPitchService
             _ => AccidentalName.Natural
         };
     }
-    
+
     private static IntervalQualityName DetermineIntervalQuality(IntervalSizeName size, int semitones)
     {
         return size switch

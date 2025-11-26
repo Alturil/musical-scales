@@ -11,12 +11,12 @@ public interface IIntervalService
     /// Creates an interval from semitone and pitch offsets
     /// </summary>
     Interval CreateInterval(int semitoneOffset, int pitchOffset);
-    
+
     /// <summary>
     /// Gets the inverse of an interval
     /// </summary>
     Interval GetInverse(Interval interval);
-    
+
     /// <summary>
     /// Adds two intervals together
     /// </summary>

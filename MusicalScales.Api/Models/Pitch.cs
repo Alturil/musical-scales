@@ -13,23 +13,23 @@ public class Pitch
     /// </summary>
     [Required]
     public DiatonicPitchName Name { get; set; }
-    
+
     /// <summary>
     /// The accidental applied to the pitch
     /// </summary>
     [Required]
     public AccidentalName Accidental { get; set; }
-    
+
     /// <summary>
     /// Number of pitches offset added by the pitch
     /// </summary>
     public int PitchOffset { get; set; }
-    
+
     /// <summary>
     /// Number of semitones offset added by the pitch
     /// </summary>
     public int SemitoneOffset { get; set; }
-    
+
     /// <summary>
     /// Returns a string representation of the pitch
     /// </summary>
@@ -44,7 +44,7 @@ public class Pitch
             AccidentalName.DoubleSharp => "♯♯",
             _ => ""
         };
-        
+
         return $"{Name}{accidentalSymbol}";
     }
 }

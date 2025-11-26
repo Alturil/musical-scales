@@ -13,23 +13,23 @@ public class Interval
     /// </summary>
     [Required]
     public IntervalSizeName Name { get; set; }
-    
+
     /// <summary>
     /// The quality of the interval (Perfect, Major, Minor, etc.)
     /// </summary>
     [Required]
     public IntervalQualityName Quality { get; set; }
-    
+
     /// <summary>
     /// Number of pitches offset added by the interval
     /// </summary>
     public int PitchOffset { get; set; }
-    
+
     /// <summary>
     /// Number of semitones offset added by the interval
     /// </summary>
     public int SemitoneOffset { get; set; }
-    
+
     /// <summary>
     /// Returns a string representation of the interval
     /// </summary>
@@ -44,7 +44,7 @@ public class Interval
             IntervalQualityName.Augmented => "aug",
             _ => Quality.ToString()
         };
-        
+
         var sizeNumber = Name switch
         {
             IntervalSizeName.Unison => "1",
@@ -57,7 +57,7 @@ public class Interval
             IntervalSizeName.Octave => "8",
             _ => "?"
         };
-        
+
         return $"{qualityString}{sizeNumber}";
     }
 }

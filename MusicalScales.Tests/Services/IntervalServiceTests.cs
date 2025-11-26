@@ -43,7 +43,7 @@ public class IntervalServiceTests
     [InlineData(-5, -3, IntervalSizeName.Fifth, IntervalQualityName.Perfect, -5, -3)]
     public void CreateInterval_WithNegativeInputs_PreservesOriginalValues(
         int semitoneOffset, int pitchOffset,
-        IntervalSizeName expectedSize, IntervalQualityName expectedQuality, 
+        IntervalSizeName expectedSize, IntervalQualityName expectedQuality,
         int expectedSemitoneOffset, int expectedPitchOffset)
     {
         // Act
