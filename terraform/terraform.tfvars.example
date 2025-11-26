@@ -1,0 +1,25 @@
+# AWS Configuration
+aws_region = "ap-southeast-2"
+environment = "dev"
+
+# Lambda Configuration
+function_name         = "musical-scales-api"
+lambda_memory_size    = 512
+lambda_timeout        = 30
+
+# API Gateway Configuration
+api_stage_name              = "v1"
+api_throttle_burst_limit    = 100
+api_throttle_rate_limit     = 50
+api_key_usage_limit         = 1000
+
+# Lambda Package Location (local file)
+lambda_package_local_path = "../lambda-package.zip"
+
+# Tags
+tags = {
+  Project     = "MusicalScales"
+  ManagedBy   = "Terraform"
+  Environment = "dev"
+  Repository  = "musical-scales"
+}

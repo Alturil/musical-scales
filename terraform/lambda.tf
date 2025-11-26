@@ -1,0 +1,79 @@
+# IAM role for Lambda execution
+resource "aws_iam_role" "lambda_execution" {
+  name = "${var.function_name}-${var.environment}-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# Attach basic Lambda execution policy
+resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
+  role       = aws_iam_role.lambda_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+# Additional policy for CloudWatch Logs
+resource "aws_iam_role_policy" "lambda_logging" {
+  name = "${var.function_name}-${var.environment}-logging-policy"
+  role = aws_iam_role.lambda_execution.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.function_name}-${var.environment}:*"
+      }
+    ]
+  })
+}
+
+# Lambda function
+resource "aws_lambda_function" "api" {
+  function_name = "${var.function_name}-${var.environment}"
+  role          = aws_iam_role.lambda_execution.arn
+  handler       = var.function_name
+  runtime       = var.lambda_runtime
+  memory_size   = var.lambda_memory_size
+  timeout       = var.lambda_timeout
+
+  # Use local zip file instead of S3
+  filename         = var.lambda_package_local_path
+  source_code_hash = filebase64sha256(var.lambda_package_local_path)
+
+  environment {
+    variables = {
+      ASPNETCORE_ENVIRONMENT = title(var.environment)
+    }
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_basic_execution,
+    aws_iam_role_policy.lambda_logging,
+    aws_cloudwatch_log_group.lambda
+  ]
+}
+
+# Lambda permission for API Gateway
+resource "aws_lambda_permission" "api_gateway" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.api.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*/*"
+}

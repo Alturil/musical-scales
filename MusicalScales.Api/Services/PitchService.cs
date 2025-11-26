@@ -37,6 +37,7 @@ public class PitchService : IPitchService
         var accidentalOffset = expectedSemitones - actualSemitones;
         
         // Handle wrap-around for negative values
+        // TODO: this might be defensive coding, but not a real life scenario
         if (accidentalOffset < -6)
             accidentalOffset += 12;
         else if (accidentalOffset > 6)

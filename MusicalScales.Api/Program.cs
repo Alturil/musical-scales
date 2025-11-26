@@ -9,6 +9,9 @@ using MusicalScales.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add AWS Lambda support for API Gateway REST API
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

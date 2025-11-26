@@ -52,6 +52,36 @@ using (var scope = app.Services.CreateScope())
 
 **Note**: Current approach is fine for demos/local development.
 
+## Infrastructure & Deployment
+
+### 1. Implement AWS Deployment Pipeline with Terraform
+**Documentation**: See `Docs/DEPLOYMENT.md` for complete analysis
+
+**Current State**: No deployment infrastructure exists
+
+**Recommended Approach**: Option 3 (API Gateway REST API + Lambda + API Keys)
+
+**Action Items**:
+1. Set up AWS account and Terraform state backend (S3 + DynamoDB)
+2. Configure GitHub OIDC for secure AWS authentication
+3. Create Terraform configuration for:
+   - Lambda function (.NET 8 runtime)
+   - API Gateway REST API
+   - API Keys with usage plans (rate limiting)
+   - CloudWatch logs and monitoring
+4. Create GitHub Actions workflow for CI/CD:
+   - Build Lambda deployment package
+   - Upload to S3
+   - Run Terraform plan/apply
+5. Document API key management and usage
+
+**Future Enhancements** (after Option 3 works):
+- Add custom domain with Route53 + ACM certificate
+- Add multiple environments (dev/staging/prod)
+- Consider Cognito for user management (if needed)
+
+**Reference**: Based on lessons learned from [numerology project](https://github.com/Alturil/numerology)
+
 ## Good Practices to Maintain
 
 These are correctly implemented and should be preserved:
@@ -66,6 +96,7 @@ These are correctly implemented and should be preserved:
 ## Severity Assessment
 
 - **Critical**: None
+- **Infrastructure**: Set up AWS deployment pipeline with Terraform
 - **Should Fix**: Consider DTOs for API endpoints
 - **Consider**: JSON storage strategy if querying intervals becomes important
 - **Acceptable for Demo**: Blocking startup seeding
@@ -77,6 +108,11 @@ These are correctly implemented and should be preserved:
 
 ## Notes
 
-For a learning/demo project showcasing music theory OOP, current tradeoffs are reasonable. For production deployment, prioritize:
-1. Add DTOs
-2. Reconsider JSON storage strategy if interval-based queries become important
+For a learning/demo project showcasing music theory OOP, current tradeoffs are reasonable.
+
+**For production deployment, prioritize:**
+1. Set up AWS deployment infrastructure (see Docs/DEPLOYMENT.md)
+2. Add DTOs for API endpoints
+3. Reconsider JSON storage strategy if interval-based queries become important
+
+**Deployment**: See `Docs/DEPLOYMENT.md` for comprehensive analysis of AWS deployment options with Terraform.

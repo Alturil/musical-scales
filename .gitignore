@@ -52,3 +52,28 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+# AWS Lambda
+*.zip
+lambda-package.zip
+
+# AWS credentials (never commit these!)
+*credentials*
+*.pem
+
+# Terraform files (handled by terraform/.gitignore)
+# But catch any at root level
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Environment files
+.env
+.env.local
+*.local.json
+
+# AWS policy files (may contain account-specific info)
+# Ignore generated policy files but keep templates
+*trust-policy.json
+*policy.json
+!*-template.json
+!s3-encryption-config.json

@@ -12,6 +12,16 @@ This is a .NET 8 Web API that models musical theory concepts (scales, intervals,
 - xUnit testing framework
 - Swagger/OpenAPI documentation
 
+## Project History
+
+This repository was migrated and reworked from an older project originally hosted on GitLab. The original codebase can be found at: https://gitlab.com/Alturil/musicscales
+
+The current version has been modernized with:
+- Upgraded to .NET 8
+- Comprehensive test suite (110+ unit tests, 8 integration tests)
+- Modern API patterns and best practices
+- Improved architecture and code organization
+
 ## Common Commands
 
 ### Running the API
@@ -193,12 +203,59 @@ The core musical concepts are represented as C# classes:
 
 ## GitHub Actions CI/CD
 
+### Build and Test Workflow
 The `.github/workflows/build-and-test.yml` workflow:
 - Runs on push to main and PRs
 - Builds solution on ubuntu-latest with .NET 8
 - Runs unit tests with trx logger
 - Runs integration tests separately
 - Uses dorny/test-reporter for test result summaries
+
+### Deployment Workflow
+The `.github/workflows/deploy.yml` workflow:
+- Runs on push to main branch
+- Validates Terraform configuration
+- Packages Lambda function
+- Deploys to AWS using Terraform
+- Tests health endpoint after deployment
+
+## AWS Deployment
+
+This API is deployed to AWS Lambda with API Gateway using Infrastructure as Code (Terraform).
+
+### Automated Setup
+
+For quick AWS setup, use the scaffolding script:
+
+```powershell
+# 1. Run setup (fully automated!)
+cd Scaffolding
+.\Setup-AWS.ps1
+
+# 2. Verify setup (optional)
+.\Verify-Setup.ps1
+
+# 3. Configure GitHub secrets (shown by setup script)
+```
+
+The script auto-detects AWS region, GitHub repo, and uses a default bucket name. You'll only be prompted if the default bucket is taken.
+
+See [Scaffolding/README.md](Scaffolding/README.md) for details.
+
+### Deployment Architecture
+
+- **Lambda Function**: .NET 8 runtime with ASP.NET Core hosting
+- **API Gateway**: REST API with API Key authentication
+- **CloudWatch**: Logs and monitoring with alarms
+- **S3**: Terraform state storage with native locking
+- **IAM**: GitHub OIDC provider for keyless authentication
+
+### Deployment Docs
+
+- [Scaffolding/README.md](Scaffolding/README.md) - Automated setup scripts
+- [AWS_SETUP.md](Docs/AWS_SETUP.md) - Full manual setup guide
+- [QUICK_DEPLOY.md](Docs/QUICK_DEPLOY.md) - Quick deployment reference
+- [DEPLOYMENT.md](Docs/DEPLOYMENT.md) - Deployment strategy and options
 
 ## Project Structure
 
@@ -219,5 +276,25 @@ musical-scales/
 │   ├── Controllers/                 # API endpoint tests
 │   ├── Fixtures/                    # Test setup (WebApplicationFactory)
 │   └── ApiTestRequests/            # JSON test payloads
+├── Scaffolding/                     # AWS setup automation
+│   ├── Setup-AWS.ps1               # Automated AWS infrastructure setup
+│   ├── Verify-Setup.ps1            # Verify AWS setup is correct
+│   └── README.md                   # Scaffolding documentation
+├── terraform/                       # Infrastructure as Code
+│   ├── main.tf                     # Terraform backend and provider config
+│   ├── lambda.tf                   # Lambda function and IAM roles
+│   ├── api_gateway.tf              # API Gateway configuration
+│   ├── api_keys.tf                 # API keys and usage plans
+│   ├── cloudwatch.tf               # Logging and alarms
+│   ├── outputs.tf                  # Output values (URLs, API keys)
+│   └── variables.tf                # Input variables
+├── .github/workflows/               # GitHub Actions
+│   ├── build-and-test.yml          # CI workflow
+│   └── deploy.yml                  # CD workflow (deploys to AWS)
+├── Docs/                            # Documentation
+│   ├── AWS_SETUP.md                # AWS setup documentation
+│   ├── QUICK_DEPLOY.md             # Quick deployment reference
+│   └── DEPLOYMENT.md               # Deployment strategy guide
+├── .env.example                     # Environment variables template
 └── musical-scales.sln              # Solution file
 ```
