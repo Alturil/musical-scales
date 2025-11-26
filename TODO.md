@@ -5,14 +5,7 @@ None identified.
 
 ## Should Fix
 
-### 1. Remove Dead Code in DbContext
-**File**: `MusicalScalesDbContext.cs:70-120`
-
-The `SeedData` method creates scale objects but never actually seeds them with `modelBuilder.Entity<Scale>().HasData()`. The comment at line 118-119 says "We'll add the seed data through the repository or a data seeder service instead" but this dead code should be removed to avoid confusion.
-
-**Action**: Delete the entire `SeedData` method and its call at line 67.
-
-### 2. Add DTOs/ViewModels for API Endpoints
+### 1. Add DTOs/ViewModels for API Endpoints
 **File**: `ScalesController.cs`
 
 The controller directly exposes domain models (`Scale`, `Pitch`, `Interval`), which creates several issues:
@@ -27,7 +20,7 @@ The controller directly exposes domain models (`Scale`, `Pitch`, `Interval`), wh
 
 ## Consider
 
-### 3. Reconsider Storing Intervals as JSON
+### 2. Reconsider Storing Intervals as JSON
 **File**: `MusicalScalesDbContext.cs:54-58`
 
 Storing intervals as JSON significantly limits querying capabilities:
@@ -39,7 +32,7 @@ Storing intervals as JSON significantly limits querying capabilities:
 
 **Tradeoff**: Query flexibility vs simplicity. Current approach is acceptable for demo/learning project.
 
-### 4. Use camelCase JSON Convention
+### 3. Use camelCase JSON Convention
 **File**: `Program.cs:16`
 
 Current implementation uses PascalCase for JSON properties:
@@ -56,7 +49,7 @@ options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 
 **Note**: This may be intentional for .NET-centric consumption. Verify API consumer expectations before changing.
 
-### 5. Move Database Seeding to Background Service
+### 4. Move Database Seeding to Background Service
 **File**: `Program.cs:85-89`
 
 The application blocks startup waiting for database operations:
@@ -90,13 +83,16 @@ These are correctly implemented and should be preserved:
 ## Severity Assessment
 
 - **Critical**: None
-- **Should Fix**: Dead code in DbContext, consider DTOs for API endpoints
+- **Should Fix**: Consider DTOs for API endpoints
 - **Consider**: JSON storage strategy if querying intervals becomes important, camelCase JSON convention
 - **Acceptable for Demo**: Blocking startup seeding, PascalCase JSON
+
+## Completed
+
+- ✅ **Remove Dead Code in DbContext** - Removed unused `SeedData` method and its call from `MusicalScalesDbContext.cs`
 
 ## Notes
 
 For a learning/demo project showcasing music theory OOP, current tradeoffs are reasonable. For production deployment, prioritize:
-1. Remove dead code
-2. Add DTOs
-3. Reconsider JSON storage strategy if interval-based queries become important
+1. Add DTOs
+2. Reconsider JSON storage strategy if interval-based queries become important
