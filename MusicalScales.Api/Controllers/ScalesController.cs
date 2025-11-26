@@ -15,13 +15,13 @@ public class ScalesController : ControllerBase
 {
     private readonly IScaleService _scaleService;
     private readonly ILogger<ScalesController> _logger;
-    
+
     public ScalesController(IScaleService scaleService, ILogger<ScalesController> logger)
     {
         _scaleService = scaleService;
         _logger = logger;
     }
-    
+
     /// <summary>
     /// Gets all musical scales
     /// </summary>
@@ -39,11 +39,11 @@ public class ScalesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all scales");
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while retrieving scales");
         }
     }
-    
+
     /// <summary>
     /// Gets a specific scale by its unique identifier
     /// </summary>
@@ -59,22 +59,22 @@ public class ScalesController : ControllerBase
         try
         {
             var scale = await _scaleService.GetScaleByIdAsync(id);
-            
+
             if (scale == null)
             {
                 return NotFound($"Scale with ID {id} not found");
             }
-            
+
             return Ok(scale);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving scale with ID {ScaleId}", id);
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while retrieving the scale");
         }
     }
-    
+
     /// <summary>
     /// Searches for scales by name
     /// </summary>
@@ -85,13 +85,13 @@ public class ScalesController : ControllerBase
     [HttpGet("search")]
     [ProducesResponseType(typeof(IEnumerable<Scale>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Scale>>> SearchScalesByName([FromQuery] [Required] string name)
+    public async Task<ActionResult<IEnumerable<Scale>>> SearchScalesByName([FromQuery][Required] string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return BadRequest("Name parameter cannot be empty or whitespace");
         }
-        
+
         try
         {
             var scales = await _scaleService.GetScalesByNameAsync(name);
@@ -100,11 +100,11 @@ public class ScalesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error searching scales by name: {Name}", name);
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while searching for scales");
         }
     }
-    
+
     /// <summary>
     /// Gets scale pitches starting from a root pitch
     /// </summary>
@@ -124,27 +124,27 @@ public class ScalesController : ControllerBase
         {
             return BadRequest("Root pitch is required");
         }
-        
+
         try
         {
             var scale = await _scaleService.GetScaleByIdAsync(id);
-            
+
             if (scale == null)
             {
                 return NotFound($"Scale with ID {id} not found");
             }
-            
+
             var pitches = await _scaleService.GetScalePitchesAsync(rootPitch, scale.Intervals);
             return Ok(pitches);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting scale pitches for scale {ScaleId}", id);
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while generating scale pitches");
         }
     }
-    
+
     /// <summary>
     /// Creates a new musical scale
     /// </summary>
@@ -161,12 +161,12 @@ public class ScalesController : ControllerBase
         {
             return BadRequest("Scale data is required");
         }
-        
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
+
         try
         {
             var createdScale = await _scaleService.CreateScaleAsync(scale);
@@ -179,11 +179,11 @@ public class ScalesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating new scale");
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while creating the scale");
         }
     }
-    
+
     /// <summary>
     /// Updates an existing musical scale
     /// </summary>
@@ -203,21 +203,21 @@ public class ScalesController : ControllerBase
         {
             return BadRequest("Scale data is required");
         }
-        
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
+
         try
         {
             var updatedScale = await _scaleService.UpdateScaleAsync(id, scale);
-            
+
             if (updatedScale == null)
             {
                 return NotFound($"Scale with ID {id} not found");
             }
-            
+
             return Ok(updatedScale);
         }
         catch (ArgumentException ex)
@@ -227,11 +227,11 @@ public class ScalesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating scale with ID {ScaleId}", id);
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while updating the scale");
         }
     }
-    
+
     /// <summary>
     /// Deletes a musical scale
     /// </summary>
@@ -247,18 +247,18 @@ public class ScalesController : ControllerBase
         try
         {
             var deleted = await _scaleService.DeleteScaleAsync(id);
-            
+
             if (!deleted)
             {
                 return NotFound($"Scale with ID {id} not found");
             }
-            
+
             return NoContent();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting scale with ID {ScaleId}", id);
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while deleting the scale");
         }
     }

@@ -14,13 +14,13 @@ public class IntervalService : IIntervalService
         // Normalize offsets to be within an octave
         var normalizedSemitones = semitoneOffset % 12;
         var normalizedPitches = pitchOffset % 7;
-        
+
         if (normalizedSemitones < 0) normalizedSemitones += 12;
         if (normalizedPitches < 0) normalizedPitches += 7;
-        
+
         var intervalSize = (IntervalSizeName)normalizedPitches;
         var quality = DetermineIntervalQuality(intervalSize, normalizedSemitones);
-        
+
         return new Interval
         {
             Name = intervalSize,
@@ -29,23 +29,23 @@ public class IntervalService : IIntervalService
             SemitoneOffset = semitoneOffset
         };
     }
-    
+
     /// <inheritdoc />
     public Interval GetInverse(Interval interval)
     {
         var inversePitchOffset = 7 - interval.PitchOffset;
         var inverseSemitoneOffset = 12 - interval.SemitoneOffset;
-        
+
         // Handle octave intervals
         if (interval.PitchOffset == 7 || interval.SemitoneOffset == 12)
         {
             inversePitchOffset = 0;
             inverseSemitoneOffset = 0;
         }
-        
+
         return CreateInterval(inverseSemitoneOffset, inversePitchOffset);
     }
-    
+
     /// <inheritdoc />
     public Interval AddIntervals(Interval interval1, Interval interval2)
     {

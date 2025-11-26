@@ -12,7 +12,7 @@ public class ScaleMetadata
     /// </summary>
     [Required]
     public IList<string> Names { get; set; } = [];
-    
+
     /// <summary>
     /// Optional description of the scale
     /// </summary>

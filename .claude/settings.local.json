@@ -22,7 +22,10 @@
       "Bash(curl.exe:*)",
       "Bash(Select-String -Pattern \"HTTP|Content-Type|^\\[\")",
       "Bash(dotnet ef database update:*)",
-      "Bash(Select-String -Pattern \"id\")"
+      "Bash(Select-String -Pattern \"id\")",
+      "Bash(dotnet format:*)",
+      "Bash(Select-String -Pattern \"CS8019|IDE0005\")",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
