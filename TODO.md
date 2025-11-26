@@ -32,24 +32,7 @@ Storing intervals as JSON significantly limits querying capabilities:
 
 **Tradeoff**: Query flexibility vs simplicity. Current approach is acceptable for demo/learning project.
 
-### 3. Use camelCase JSON Convention
-**File**: `Program.cs:16`
-
-Current implementation uses PascalCase for JSON properties:
-```csharp
-options.JsonSerializerOptions.PropertyNamingPolicy = null;
-```
-
-REST APIs typically use camelCase per JavaScript conventions (`pitchOffset` instead of `PitchOffset`).
-
-**Action**: Consider changing to:
-```csharp
-options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-```
-
-**Note**: This may be intentional for .NET-centric consumption. Verify API consumer expectations before changing.
-
-### 4. Move Database Seeding to Background Service
+### 3. Move Database Seeding to Background Service
 **File**: `Program.cs:85-89`
 
 The application blocks startup waiting for database operations:
@@ -84,12 +67,13 @@ These are correctly implemented and should be preserved:
 
 - **Critical**: None
 - **Should Fix**: Consider DTOs for API endpoints
-- **Consider**: JSON storage strategy if querying intervals becomes important, camelCase JSON convention
-- **Acceptable for Demo**: Blocking startup seeding, PascalCase JSON
+- **Consider**: JSON storage strategy if querying intervals becomes important
+- **Acceptable for Demo**: Blocking startup seeding
 
 ## Completed
 
 - ✅ **Remove Dead Code in DbContext** - Removed unused `SeedData` method and its call from `MusicalScalesDbContext.cs`
+- ✅ **Use camelCase JSON Convention** - Changed `PropertyNamingPolicy` from `null` to `JsonNamingPolicy.CamelCase` in `Program.cs`
 
 ## Notes
 

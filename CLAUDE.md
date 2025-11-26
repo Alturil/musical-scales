@@ -171,7 +171,7 @@ The core musical concepts are represented as C# classes:
 
 ### JSON Serialization
 - Uses `System.Text.Json` with `JsonStringEnumConverter` for enum serialization
-- Property naming policy is `null` (preserves PascalCase)
+- Property naming policy is `JsonNamingPolicy.CamelCase` (e.g., `pitchOffset` instead of `PitchOffset`)
 - Configured in `Program.cs` for both API and serialization
 
 ### Database Patterns
