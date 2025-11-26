@@ -182,7 +182,7 @@ jobs:
             API_URL=$(terraform output -raw api_gateway_url)
             API_KEY_ID=$(terraform output -raw api_key_id)
 
-            echo "### 📍 API Endpoint" >> $GITHUB_STEP_SUMMARY
+            echo "### 📍 API Gateway URL" >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
             echo "$API_URL" >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
@@ -191,14 +191,10 @@ jobs:
             echo "### 🔑 API Key" >> $GITHUB_STEP_SUMMARY
             echo "**Key ID:** \`$API_KEY_ID\`" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Retrieve the key value:**" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-            echo "aws apigateway get-api-key --api-key $API_KEY_ID --include-value --query 'value' --output text" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
 
             echo "### 🚀 Test the API" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-            echo "curl -H \"x-api-key: YOUR_API_KEY\" $API_URL/api/scales" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`powershell" >> $GITHUB_STEP_SUMMARY
+            echo "\$API_KEY = aws apigateway get-api-key --api-key $API_KEY_ID --include-value --query 'value' --output text" >> $GITHUB_STEP_SUMMARY
+            echo "Invoke-WebRequest -Uri \"$API_URL/api/scales\" -Headers @{\"x-api-key\"=\$API_KEY}" >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           fi
