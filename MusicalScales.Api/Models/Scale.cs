@@ -23,7 +23,7 @@ public class Scale
     /// The intervals that define the scale structure
     /// </summary>
     [Required]
-    public IList<Interval> Intervals { get; set; } = new List<Interval>();
+    public IList<Interval> Intervals { get; set; } = [];
     
     /// <summary>
     /// When the scale was created

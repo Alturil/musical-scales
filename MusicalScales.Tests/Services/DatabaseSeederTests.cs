@@ -64,7 +64,7 @@ public class DatabaseSeederTests : IDisposable
         {
             Id = Guid.NewGuid(),
             Metadata = new ScaleMetadata { Names = ["Existing Scale"] },
-            Intervals = new List<Interval>()
+            Intervals = []
         };
         
         _context.Scales.Add(existingScale);
