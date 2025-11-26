@@ -60,7 +60,7 @@ public class ScalesControllerTests : IDisposable
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         scales.Should().NotBeNull();
-        scales!.Should().HaveCount(2); // DatabaseSeeder seeds 2 scales
+        scales!.Should().HaveCount(11); // DatabaseSeeder seeds 11 scales
         scales.Should().Contain(s => s.Metadata.Names.Any(name => name.Contains("Major")));
     }
 
