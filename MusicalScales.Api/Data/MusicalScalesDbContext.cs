@@ -46,9 +46,6 @@ public class MusicalScalesDbContext : DbContext
                     
                 metadata.Property(m => m.Description)
                     .HasColumnName("MetadataDescription");
-                    
-                metadata.Property(m => m.Origin)
-                    .HasColumnName("MetadataOrigin");
             });
             
             var intervalsProperty = entity.Property(e => e.Intervals)
